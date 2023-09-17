@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    
+    <title>SIMSA</title>
+  </head>
+  <body>
+
+        
+    <div id="includedContent"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $("#includedContent").load("sidebar.html");
+        });
+    </script>
+
+
+
+    <div class="container mt-5">
+       <div class="text-center">
+         <h1 class="display-5 mb-5"><strong>Manage Stocks</strong></S></h1>
+       </div>
+       <div class="main row justify-content-center">
+         <form action="" id="student-form" class="row justify-continent-center mb-4" autocomplete="off">
+            <div class="col-8 mb-3">
+               <label for="product">Product</label>
+                 <input class="form-control" id="product" type="text" placeholder="Enter Product">
+            </div>
+         </form>
+       </div>
+       <div class="main row justify-content-center">
+        <form action="" id="student-form" class="row justify-continent-center mb-4" autocomplete="off">
+           <div class="col-8 mb-3">
+              <label for="category">Category</label>
+                <input class="form-control" id="category" type="text" placeholder="Enter Category">
+           </div>
+        </form>
+      </div>
+      <div class="main row justify-content-center">
+        <form action="" id="student-form" class="row justify-continent-center mb-4" autocomplete="off">
+           <div class="col-8 mb-3">
+              <label for="quantity">Quantity</label>
+                <input class="form-control" id="quantity" type="text" placeholder="Enter Quantity">
+           </div>
+      <div class="col-8">
+            <input  class="btn btn-success add-btn"  type="submit" value="Submit">
+      </div>
+      <div class="col-8 mt-5">
+         <table class="table table-stripped table-dark">
+           <thead>
+             <tr>
+               <th>Product</th>
+               <th>Category</th>
+               <th>Quantity</th>
+               <th>Action</th>
+             </tr>
+           </thead>
+           <tbody class="product-list">
+             <td>Shrimp</td>
+             <td>Kitchen</td>
+             <td>27</td>
+             <td>
+               <a href="" class="btn btn-warning btn-sm  edit">Edit</a>
+               <a href="" class="btn btn-danger btn-sm  delete">Delete</a>
+             </td>
+         </table>
+      </div>
+        </form>
+      </div>
+    </div>
+
+  </body>
+</html>
