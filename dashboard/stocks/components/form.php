@@ -1,12 +1,11 @@
 <div id="layoutSidenav_content">
     <?php
         require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
-        $id = isset($_GET['id']) ? (int) isset($_GET['id']) : null;
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
         $formMode = isset($_GET['id']) ? 'update' : 'create';
         $formLabel = $formMode == 'update' ? 'Update Stock' : 'Create Stock';
         $formSubmitLabel = $formMode == 'update' ? 'Update' : 'Save';
         $product = $id ? productFindById($id) : productGetEmptyForm();
-
         if (isset($_POST['submit'])) {
             $product->product_name = $_POST['product_name'];
             $product->quantity = $_POST['quantity'];
@@ -45,7 +44,7 @@
                          <!-- Quantity input -->
                          <div class="mb-3">
                             <label class="form-label" for="quantity">Quantity</label>
-                            <input class="form-control" id="quantity" name="quantity" type="number" />
+                            <input class="form-control" id="quantity" name="quantity" type="number" value="<?php echo $product->quantity ?>"/>
                         </div>
 
                         <!-- Form submit button -->

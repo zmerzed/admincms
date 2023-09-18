@@ -15,6 +15,11 @@ function store($username, $password)
 	return empty($resultData) ? false : true;
 }
 
+/** 
+*	
+* Insert a product
+* @return boolean
+**/
 function productStore($product) 
 {
 	global $db;
@@ -33,6 +38,31 @@ function productStore($product)
 	return false;
 }
 
+function productList($params)
+{
+	global $db;
+	
+	try {
+		 $query = "SELECT * FROM `products`";
+		 $result = mysqli_query($db->link, $query);
+		 
+		   if ($result->num_rows > 0) 
+		   {
+			   $listing = [];
+			   while($row = $result->fetch_assoc())
+			   {
+				   $listing[] = (object) $row;
+			   }
+
+			   return $listing;
+		   } 
+	} catch (\Exception) {
+		
+	}
+
+	return [];
+}
+
 function productUpdate()
 {
 
@@ -40,6 +70,21 @@ function productUpdate()
 
 function productFindById($id=null)
 {
+
+	global $db;
+	
+	try {
+		 $query = "SELECT * FROM `products` where product_id={$id} limit 1";
+		 $result = mysqli_query($db->link, $query);
+		
+		   if ($result->num_rows > 0) 
+		   {
+			   return (object) $result->fetch_assoc(); 
+		   } 
+	} catch (\Exception) {
+		
+	}
+
 	return productGetEmptyForm();
 }
 

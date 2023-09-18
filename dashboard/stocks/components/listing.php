@@ -1,4 +1,9 @@
 <div id="layoutSidenav_content">
+    <?php 
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
+        $listing = productList([]);
+
+    ?>
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
@@ -26,15 +31,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Shrimp</td>
-                                <td>Kitchen</td>
-                                <td>27</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">Alert</button>
-                                </td>
-                            </tr>
+                            <?php
+                                foreach($listing as $product) {
+                                    echo '<tr>';
+                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
+                                    echo '<td>' . $product->product_name . "</td>";
+                                    echo '<td>' . $product->category . '</td>';
+                                    echo '<td>' . $product->quantity . '</td>';
+                                    echo "
+                                    <td>
+                                        <a href=\"/dashboard/stocks/edit.php?id={$product->product_id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>
+                                        <button type=\"button\" class=\"btn btn-warning\">Delete</button>
+                                    </td>";
+                                    echo '
+                                    <td>
+                                        <button type="button" class="btn btn-danger">Alert</button>
+                                    </td>';
+                                    echo '</tr>';
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
