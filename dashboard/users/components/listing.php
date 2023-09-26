@@ -26,6 +26,7 @@
                                 <th scope="col">Username</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Phone Number</th>
+                                <th scope="col">Access Level</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -37,6 +38,7 @@
                                     echo '<td>' . $user->username . "</td>";
                                     echo '<td>' . $user->name . '</td>';
                                     echo '<td>' . $user->phone_number . '</td>';
+                                    echo '<td>' . $user->access_level . '</td>';
                                     echo "
                                     <td>
                                         <a href=\"/dashboard/users/edit.php?id={$user->id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>

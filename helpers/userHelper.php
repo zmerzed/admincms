@@ -9,17 +9,17 @@
 function userStore($user) 
 {
 	global $db;
-	
-	try {
-		$sql = "INSERT INTO users (name, username, phone_number, password, created_at, updated_at) 
-				VALUES ('{$user->name}', {$user->username}, '{$user->phone_number}', '{$user->password}', now(), now())";
+	// dd($user);
+	//try {
+		$sql = "INSERT INTO users (name, username, password, phone_number, access_level, created_at, updated_at) 
+				VALUES ('{$user->name}', '{$user->username}', '{$user->password}', '{$user->phone_number}', {$user->access_level}, now(), now())";
 		mysqli_query($db->link, $sql);
 		$db->link->close();
 
 		return true;
-	} catch (\Exception) {
+	// } catch (\Exception) {
 		
-	}
+	// }
 
 	return false;
 }
@@ -123,6 +123,7 @@ function userGetEmptyForm()
 		'name' => null,
 		'username' => null,
         'phone_number' => null,
+		'access_level' => null,
 		'password' => null,
 		'created_at' => null,
 		'updated_at' => null

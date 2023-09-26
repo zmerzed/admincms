@@ -1,18 +1,22 @@
 <div id="layoutSidenav_content">
     <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/userHelper.php';
         $id = isset($_GET['id']) ? $_GET['id'] : null;
         $formMode = isset($_GET['id']) ? 'update' : 'create';
-        $formLabel = $formMode == 'update' ? 'Update Stock' : 'Create Stock';
+        $formLabel = $formMode == 'update' ? 'Update User' : 'Create User';
         $formSubmitLabel = $formMode == 'update' ? 'Update' : 'Save';
-        $product = $id ? productFindById($id) : productGetEmptyForm();
+        $user = $id ? userFindById($id) : userGetEmptyForm();
+
         if (isset($_POST['submit'])) {
-            $product->product_name = $_POST['product_name'];
-            $product->quantity = $_POST['quantity'];
-            $product->category = $_POST['category'];
+
+            $user->username = $_POST['username'];
+            $user->name = $_POST['name'];
+            $user->password = $_POST['password'];
+            $user->phone_number = $_POST['phone_number'];
+            $user->access_level = $_POST['access_level'];
             
-            if (productStore($product)) {
-                header('location: ' . '/dashboard/stocks');
+            if (userStore($user)) {
+                header('location: ' . '/dashboard/users');
             }
         }
     ?>
@@ -26,32 +30,45 @@
                 <div class="card-body">
                     <form id="productForm" method="POST" action='create.php'>
 
-                        <!-- Product Name input -->
+                        <!-- User Name input -->
                         <div class="mb-3">
-                            <label class="form-label" for="productName">Product Name</label>
-                            <input class="form-control" id="productName" name="product_name" type="text" value="<?php echo $product->product_name ?>"/>
+                            <label class="form-label" for="userName">Username</label>
+                            <input class="form-control" id="userName" name="username" type="text" value="<?php echo $user->username ?>"/>
                         </div>
 
-                        <!-- Category input -->
+                        <!-- Name input -->
                         <div class="mb-3">
-                            <label class="form-label" for="quantity">Category</label>
-                            <select class="form-select" name="category">
-                                <option value="kitchen" <?php echo ($product->category == 'kitchen') ? 'selected' : '' ?>>Kitchen</option>
-                                <option value="furniture" <?php echo ($product->category == 'furniture') ? 'selected' : '' ?>>Furniture</option>
-                            </select>
+                            <label class="form-label" for="name">Name</label>
+                            <input class="form-control" id="name" name="name" type="text" value="<?php echo $user->name ?>"/>
                         </div>
                         
-                         <!-- Quantity input -->
-                         <div class="mb-3">
-                            <label class="form-label" for="quantity">Quantity</label>
-                            <input class="form-control" id="quantity" name="quantity" type="number" value="<?php echo $product->quantity ?>"/>
+                        <!-- Phone number input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="phone_number">Phone Number</label>
+                            <input class="form-control" id="phone_number" name="phone_number" type="text" value="<?php echo $user->phone_number ?>"/>
                         </div>
+
+                        <!-- Password input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input class="form-control" id="password" name="password" type="text" value="<?php echo $user->password ?>"/>
+                        </div>
+
+                        <!-- Access Level input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="access_level">Access Level</label>
+                            <select class="form-select" name="access_level">
+                                <option value="1" <?php echo ($user->access_level == 1) ? 'selected' : '' ?>>Admin</option>
+                                <option value="2" <?php echo ($user->access_level == 2) ? 'selected' : '' ?>>Guest</option>
+                            </select>
+                        </div>
+
 
                         <!-- Form submit button -->
                         <div class="col">
                             <div class="col">
                                 <input class="btn btn-primary btn-lg" name="submit" type="submit" value="<?php echo $formSubmitLabel ?>"/>
-                                <a href="/dashboard/stocks" class="btn btn-default btn-lg">Cancel</a>
+                                <a href="/dashboard/users" class="btn btn-default btn-lg">Cancel</a>
                             </div>
                         </div>
                     </form>
