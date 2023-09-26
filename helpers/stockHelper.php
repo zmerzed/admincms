@@ -1,25 +1,11 @@
 <?php
 
-function store($username, $password) 
-{
-	global $db;
-	$result = mysqli_query($db->link, "SELECT * FROM users WHERE username = '$username' and password = '$password'");
-
-	// Fetch the next row of a result set as an associative array
-	$resultData = mysqli_fetch_assoc($result);
-
-	if (!empty($resultData)) {
-		$_SESSION['auth'] = $resultData;
-	}
-
-	return empty($resultData) ? false : true;
-}
-
 /** 
-*	
-* Insert a product
-* @return boolean
-**/
+ *	
+ * saving a product
+ * @return boolean
+ *
+ **/
 function productStore($product) 
 {
 	global $db;
@@ -38,6 +24,12 @@ function productStore($product)
 	return false;
 }
 
+/** 
+ *	
+ * getting a list of products
+ * @return list of objects
+ *
+ **/
 function productList($params)
 {
 	global $db;
@@ -63,11 +55,23 @@ function productList($params)
 	return [];
 }
 
+/** 
+ *	
+ * updating a product record
+ * @return boolean
+ *
+ **/
 function productUpdate()
 {
 
 }
 
+/** 
+ *	
+ * find a product by id
+ * @return a product
+ *
+ **/
 function productFindById($id=null)
 {
 
@@ -87,6 +91,31 @@ function productFindById($id=null)
 
 	return productGetEmptyForm();
 }
+
+/** 
+ *	
+ * find a product by id
+ * @return a product
+ *
+ **/
+function productDelete($id=null)
+{
+
+	global $db;
+	
+	$result = false;
+
+	try {
+		$query = "DELETE FROM `products` where product_id={$id} limit 1";
+		$result = mysqli_query($db->link, $query);
+		
+	} catch (\Exception) {
+		
+	}
+
+	return $result;
+}
+
 
 function productGetEmptyForm()
 {

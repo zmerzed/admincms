@@ -4,11 +4,11 @@
     require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/functions.php';
     // functions.php must be first in the sequence of importing
     require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/auth.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/userHelper.php';
     $id = isset($_GET['id']) ? $_GET['id'] : null;
     
     if ($id) {
         $result = productDelete($id);
-        header('location: ' . '/dashboard/stocks');
+        header('location: ' . '/dashboard/users');
     }
 ?>

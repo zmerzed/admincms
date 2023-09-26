@@ -41,7 +41,7 @@
                                     echo "
                                     <td>
                                         <a href=\"/dashboard/stocks/edit.php?id={$product->product_id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>
-                                        <button type=\"button\" class=\"btn btn-warning\">Delete</button>
+                                        <a href=\"/dashboard/stocks/actions/delete.php?id={$product->product_id}\"  type=\"button\" class=\"btn btn-warning\">Delete</a>
                                     </td>";
                                     echo '
                                     <td>
