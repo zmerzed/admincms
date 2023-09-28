@@ -25,3 +25,17 @@ function dd($data) {
 	echo '</pre>';
 	exit();
 }
+
+function displayErrors($errors) {
+
+	$errorStr = '<div class="col text-danger errors">';
+
+	foreach ($errors as $error) {
+
+		$errorStr .= $error;
+	}
+
+	$errorStr .= "</div>";
+
+	return $errorStr;
+}
