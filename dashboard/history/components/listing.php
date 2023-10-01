@@ -5,9 +5,8 @@
 </style>
 <div id="layoutSidenav_content">
     <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/userHelper.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
-        $listing = userList([]);
         $month_from = 1;
         $month_to = 1;
         $error_messages = [];
@@ -25,16 +24,28 @@
             $error_messages = ["Error: <strong>Month From</strong> must be less than to <strong>Month To</strong>"];
         } else {
 
-            foreach (range($month_from, $month_to) as $number) {
+            foreach (range($month_from, $month_to) as $number) 
+            {
+
+                $monthNumber = sprintf("%02d", $number);
+                $date = "2023-{$monthNumber}-01";
+
+                
                 $monthData = [
-                    'month' => $number,
+                    'month' => date("F", strtotime($date)),
                     'month_value' => $number,
+                    'date' => $date,
                     'list' => []
                 ];
 
+                $listing = productList([
+                    'date_from' => date("Y-m-01", strtotime($date)),
+                    'date_to' => date("Y-m-t", strtotime($date))
+                ]);
+
+                $monthData['listing'] = $listing;
                 $data[] = $monthData;
             }
-
         }
 
     ?>
@@ -51,15 +62,15 @@
                     <div class="col lg-6">
                         <label class="form-label" for="quantity">Month From:</label>
                         <select class="form-select" name="month_from">
-                            <option value="1" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
-                            <option value="2" <?php echo $month_from == 2 ? 'selected' : '' ?>>February</option>
-                            <option value="3" <?php echo $month_from == 3 ? 'selected' : '' ?>>March</option>
-                            <option value="4" <?php echo $month_from == 4 ? 'selected' : '' ?>>April</option>
-                            <option value="5" <?php echo $month_from == 5 ? 'selected' : '' ?>>May</option>
-                            <option value="6" <?php echo $month_from == 6 ? 'selected' : '' ?>>June</option>
-                            <option value="7" <?php echo $month_from == 7 ? 'selected' : '' ?>>July</option>
-                            <option value="8" <?php echo $month_from == 8 ? 'selected' : '' ?>>August</option>
-                            <option value="9" <?php echo $month_from == 9 ? 'selected' : '' ?>>September</option>
+                            <option value="01" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
+                            <option value="02" <?php echo $month_from == 2 ? 'selected' : '' ?>>February</option>
+                            <option value="03" <?php echo $month_from == 3 ? 'selected' : '' ?>>March</option>
+                            <option value="04" <?php echo $month_from == 4 ? 'selected' : '' ?>>April</option>
+                            <option value="05" <?php echo $month_from == 5 ? 'selected' : '' ?>>May</option>
+                            <option value="06" <?php echo $month_from == 6 ? 'selected' : '' ?>>June</option>
+                            <option value="07" <?php echo $month_from == 7 ? 'selected' : '' ?>>July</option>
+                            <option value="08" <?php echo $month_from == 8 ? 'selected' : '' ?>>August</option>
+                            <option value="09" <?php echo $month_from == 9 ? 'selected' : '' ?>>September</option>
                             <option value="10" <?php echo $month_from == 10 ? 'selected' : '' ?>>October</option>
                             <option value="11" <?php echo $month_from == 11 ? 'selected' : '' ?>>November</option>
                             <option value="12" <?php echo $month_from == 12 ? 'selected' : '' ?>>December</option>
@@ -90,50 +101,52 @@
 
             </div>
 
+            <!-- display if any errors -->
             <?php if (count($error_messages) > 0) { 
                 echo displayErrors($error_messages);
             } ?>
+            <div class="row">
+
 
             <?php if (count($error_messages) <= 0) { ?>
-                <div class="col">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            List
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Phone Number</th>
-                                        <th scope="col">Access Level</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($listing as $user) {
-                                        echo '<tr>';
-                                        echo '<th scope=\"row\">' . $user->id . '</th>';
-                                        echo '<td>' . $user->username . "</td>";
-                                        echo '<td>' . $user->name . '</td>';
-                                        echo '<td>' . $user->phone_number . '</td>';
-                                        echo '<td>' . $user->access_level . '</td>';
-                                        echo "
-                                    <td>
-                                        <a href=\"/dashboard/users/edit.php?id={$user->id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>
-                                        <a href=\"/dashboard/users/actions/delete.php?id={$user->id}\"  type=\"button\" class=\"btn btn-warning\">Delete</a>
-                                    </td>";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                <?php foreach($data as $month) { ?>
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <?php echo $month['month']; ?>
+                            </div>
+                            <div class="card-body">
+                                <?php if (count($month['listing']) <= 0) {
+                                    echo "* No data available";
+                                } else { ?>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Product Name</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                foreach($month['listing'] as $product) {
+                                                    echo '<tr>';
+                                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
+                                                    echo '<td>' . $product->product_name . "</td>";
+                                                    echo '<td>' . $product->category . '</td>';
+                                                    echo '<td>' . $product->quantity . '</td>';
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             <?php } ?>
+            </div>
         </div>
     </main>
 </div>

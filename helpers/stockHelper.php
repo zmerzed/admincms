@@ -35,8 +35,14 @@ function productList($params)
 	global $db;
 	
 	try {
-		 $query = "SELECT * FROM `products`";
-		 $result = mysqli_query($db->link, $query);
+		$query = "SELECT * FROM `products`";
+
+		if(isset($params['date_from']) && isset($params['date_to'])) {
+			$query =  "SELECT * FROM `products` WHERE created_at";
+			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}')";
+		}
+		
+		$result = mysqli_query($db->link, $query);
 		 
 		   if ($result->num_rows > 0) 
 		   {
@@ -47,7 +53,8 @@ function productList($params)
 			   }
 
 			   return $listing;
-		   } 
+		   }
+
 	} catch (\Exception) {
 		
 	}
