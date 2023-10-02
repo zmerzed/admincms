@@ -106,46 +106,44 @@
                 echo displayErrors($error_messages);
             } ?>
             <div class="row">
-
-
-            <?php if (count($error_messages) <= 0) { ?>
-                <?php foreach($data as $month) { ?>
-                    <div class="col">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <?php echo $month['month']; ?>
-                            </div>
-                            <div class="card-body">
-                                <?php if (count($month['listing']) <= 0) {
-                                    echo "* No data available";
-                                } else { ?>
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">ID</th>
-                                                <th scope="col">Product Name</th>
-                                                <th scope="col">Category</th>
-                                                <th scope="col">Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                foreach($month['listing'] as $product) {
-                                                    echo '<tr>';
-                                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
-                                                    echo '<td>' . $product->product_name . "</td>";
-                                                    echo '<td>' . $product->category . '</td>';
-                                                    echo '<td>' . $product->quantity . '</td>';
-                                                }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                <?php } ?>
+                <?php if (count($error_messages) <= 0) { ?>
+                    <?php foreach($data as $month) { ?>
+                        <div class="col">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <?php echo $month['month']; ?>
+                                </div>
+                                <div class="card-body">
+                                    <?php if (count($month['listing']) <= 0) {
+                                        echo "* No data available";
+                                    } else { ?>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Product Name</th>
+                                                    <th scope="col">Category</th>
+                                                    <th scope="col">Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    foreach($month['listing'] as $product) {
+                                                        echo '<tr>';
+                                                        echo '<th scope=\"row\">' . $product->product_id . '</th>';
+                                                        echo '<td>' . $product->product_name . "</td>";
+                                                        echo '<td>' . $product->category . '</td>';
+                                                        echo '<td>' . $product->quantity . '</td>';
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                 <?php } ?>
-            <?php } ?>
             </div>
         </div>
     </main>

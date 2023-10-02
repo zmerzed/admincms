@@ -57,6 +57,35 @@ function userList($params)
 
 /** 
  *	
+ * count total users
+ * @return integer
+ *
+ **/
+function userTotal()
+{
+	global $db;
+	
+	try {
+		$query = "SELECT count(*)FROM `users`";
+
+		$result = mysqli_query($db->link, $query);
+		$count = 0;
+		while($row = mysqli_fetch_array($result)) {
+			$count = $row['count(*)'];
+		}
+
+		return $count;
+
+	} catch (\Exception) {
+		
+	}
+
+	return 0;
+}
+
+
+/** 
+ *	
  * updating a user record
  * @return boolean
  *

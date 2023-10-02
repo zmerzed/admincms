@@ -64,6 +64,34 @@ function productList($params)
 
 /** 
  *	
+ * count total products
+ * @return list of objects
+ *
+ **/
+function productTotal()
+{
+	global $db;
+	
+	try {
+		$query = "SELECT count(*)FROM `products`";
+
+		$result = mysqli_query($db->link, $query);
+		$count = 0;
+		while($row = mysqli_fetch_array($result)) {
+			$count = $row['count(*)'];
+		}
+
+		return $count;
+
+	} catch (\Exception) {
+		
+	}
+
+	return 0;
+}
+
+/** 
+ *	
  * updating a product record
  * @return boolean
  *
