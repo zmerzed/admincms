@@ -11,7 +11,10 @@
 </head>
 
 <body>
-
+  <?php 
+    ob_start();
+    session_start();
+  ?>
   <div class="wrapper">
     <span class="bg-animate"></span>
 
@@ -27,6 +30,11 @@
           <input type="password" name="password" id="password" required>
           <label>Password</label>
           <i class='bx bxs-lock-alt'></i>
+          <?php if(isset($_SESSION['login_error'])) { ?>
+            <div class="errors" style="padding-top: 20px">
+              <?php echo $_SESSION['login_error']; ?>
+            </div>
+          <?php } ?>
         </div>
         <button class="btn" type="submit">Login</button>
       </form>

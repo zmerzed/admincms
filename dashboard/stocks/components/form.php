@@ -44,7 +44,7 @@
                          <!-- Quantity input -->
                          <div class="mb-3">
                             <label class="form-label" for="quantity">Quantity</label>
-                            <input class="form-control" id="quantity" name="quantity" type="number" value="<?php echo $product->quantity ?>"/>
+                            <input class="form-control" id="quantity" max="200" name="quantity" type="number" value="<?php echo $product->quantity ?>"/>
                         </div>
 
                         <!-- Form submit button -->

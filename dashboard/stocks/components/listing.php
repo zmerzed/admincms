@@ -33,11 +33,13 @@
                         <tbody>
                             <?php
                                 foreach($listing as $product) {
+                                    $lowStockClass = $product->quantity <= 10 ? 'text-danger' : '';
                                     echo '<tr>';
                                     echo '<th scope=\"row\">' . $product->product_id . '</th>';
                                     echo '<td>' . $product->product_name . "</td>";
                                     echo '<td>' . $product->category . '</td>';
-                                    echo '<td>' . $product->quantity . '</td>';
+                                    echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
+                                        '</div></td>';
                                     echo "
                                     <td>
                                         <a href=\"/dashboard/stocks/edit.php?id={$product->product_id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>

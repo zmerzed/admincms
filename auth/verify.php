@@ -10,5 +10,6 @@ $isLogin = login($username, $password);
 if ($isLogin) {
   header('location: ' . '/dashboard/index.php');
 } else {
+  $_SESSION['login_error'] = 'Invalid username or password';
   header('location: ' . '/login.php');
 }
