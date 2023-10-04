@@ -9,17 +9,17 @@
 function userStore($user) 
 {
 	global $db;
-	// dd($user);
-	//try {
+
+	try {
 		$sql = "INSERT INTO users (name, username, password, phone_number, access_level, created_at, updated_at) 
 				VALUES ('{$user->name}', '{$user->username}', '{$user->password}', '{$user->phone_number}', {$user->access_level}, now(), now())";
 		mysqli_query($db->link, $sql);
 		$db->link->close();
 
 		return true;
-	// } catch (\Exception) {
+	} catch (\Exception) {
 		
-	// }
+	}
 
 	return false;
 }
