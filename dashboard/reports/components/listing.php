@@ -11,7 +11,6 @@
         $month_to = 1;
         $error_messages = [];
         $data = [];
-        $year = 2023;
 
         if (isset($_GET['month_from'])) {
             $month_from = $_GET['month_from'];
@@ -19,10 +18,6 @@
 
         if (isset($_GET['month_to'])) {
             $month_to = $_GET['month_to'];
-        }
-
-        if (isset($_GET['year'])) {
-            $year = $_GET['year'];
         }
 
         if ($month_to < $month_from) {
@@ -33,7 +28,7 @@
             {
 
                 $monthNumber = sprintf("%02d", $number);
-                $date = "{$year}-{$monthNumber}-01";
+                $date = "2023-{$monthNumber}-01";
 
                 $monthData = [
                     'month' => date("F", strtotime($date)),
@@ -62,7 +57,7 @@
             </div>
             <div class="row justify-content-between mb-4">
                 <form id="productForm" method="GET" action='history'>
-                    <div class="col lg-4">
+                    <div class="col lg-6">
                         <label class="form-label" for="quantity">Month From:</label>
                         <select class="form-select" name="month_from">
                             <option value="01" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
@@ -79,7 +74,7 @@
                             <option value="12" <?php echo $month_from == 12 ? 'selected' : '' ?>>December</option>
                         </select>
                     </div>
-                    <div class="col lg-4">
+                    <div class="col lg-6">
                         <label class="form-label" for="quantity">Month To:</label>
                         <select class="form-select" name="month_to">
                             <option value="1" <?php echo $month_to == 1 ? 'selected' : '' ?>>January</option>
@@ -94,22 +89,6 @@
                             <option value="10" <?php echo $month_to == 10 ? 'selected' : '' ?>>October</option>
                             <option value="11" <?php echo $month_to == 11 ? 'selected' : '' ?>>November</option>
                             <option value="12" <?php echo $month_to == 12 ? 'selected' : '' ?>>December</option>
-                        </select>
-                    </div>
-                    <div class="col lg-4">
-                        <label class="form-label" for="quantity">Year</label>
-                        <select class="form-select" name="year">
-                            <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
-                            <option value="2021" <?php echo $year == 2021 ? 'selected' : '' ?>>2021</option>
-                            <option value="2022" <?php echo $year == 2022 ? 'selected' : '' ?>>2022</option>
-                            <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
-                            <option value="2024" <?php echo $year == 2024 ? 'selected' : '' ?>>2024</option>
-                            <option value="2025" <?php echo $year == 2025 ? 'selected' : '' ?>>2025</option>
-                            <option value="2026" <?php echo $year == 2026 ? 'selected' : '' ?>>2026</option>
-                            <option value="2027" <?php echo $year == 2027 ? 'selected' : '' ?>>2027</option>
-                            <option value="2028" <?php echo $year == 2028 ? 'selected' : '' ?>>2028</option>
-                            <option value="2029" <?php echo $year == 2029 ? 'selected' : '' ?>>2029</option>
-                            <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
                         </select>
                     </div>
                     <div class="col pt-4">
