@@ -8,7 +8,7 @@
     $id = isset($_GET['id']) ? $_GET['id'] : null;
     
     if ($id) {
-        $result = productDelete($id);
+        $result = userDelete($id);
         header('location: ' . '/dashboard/users');
     }
 ?>

@@ -158,3 +158,17 @@ function userGetEmptyForm()
 		'updated_at' => null
 	];
 }
+
+function userAdmins()
+{
+	$users = [];
+	return $users;
+}
+
+function sendSMS()
+{
+	$users = userAdmins();
+	foreach ($users as $user) {
+		// insert sms code sending
+	}
+}
