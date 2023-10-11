@@ -6,7 +6,8 @@
         $formLabel = $formMode == 'update' ? 'Update User' : 'Create User';
         $formSubmitLabel = $formMode == 'update' ? 'Update' : 'Save';
         $user = $id ? userFindById($id) : userGetEmptyForm();
-
+        $error_messages = [];
+        
         if (isset($_POST['submit'])) {
 
             $user->username = $_POST['username'];
@@ -14,9 +15,18 @@
             $user->password = $_POST['password'];
             $user->phone_number = $_POST['phone_number'];
             $user->access_level = $_POST['access_level'];
-            
-            if (userStore($user)) {
-                header('location: ' . '/dashboard/users');
+        
+            if (userIsExistUserName($user)) {
+                $error_messages[] = "<strong>Username: {$user->username} </strong> is already exists";
+            }
+
+            if (count($error_messages) <= 0) {
+                if ($id && userUpdate($user)) { // do some update
+                    header('location: ' . '/dashboard/users');
+    
+                }  else if (userStore($user)) { // create new user
+                    header('location: ' . '/dashboard/users');
+                }
             }
         }
     ?>
@@ -27,31 +37,35 @@
                 <div class="card-header">
                     Form
                 </div>
-                <div class="card-body">
-                    <form id="productForm" method="POST" action='create.php'>
 
+                <div class="card-body">
+                    <form id="productForm" method="POST" action="<?php echo $formMode == 'create' ? 'create.php' : 'edit.php?id=' . $id ?>">
+                                        <!-- display if any errors -->
+                        <?php if (count($error_messages) > 0) { 
+                            echo displayErrors($error_messages);
+                        } ?>
                         <!-- User Name input -->
                         <div class="mb-3">
                             <label class="form-label" for="userName">Username</label>
-                            <input class="form-control" id="userName" name="username" type="text" value="<?php echo $user->username ?>"/>
+                            <input class="form-control" id="userName" name="username" type="text" value="<?php echo $user->username ?>" required/>
                         </div>
 
                         <!-- Name input -->
                         <div class="mb-3">
                             <label class="form-label" for="name">Name</label>
-                            <input class="form-control" id="name" name="name" type="text" value="<?php echo $user->name ?>"/>
+                            <input class="form-control" id="name" name="name" type="text" value="<?php echo $user->name ?>" required/>
                         </div>
                         
                         <!-- Phone number input -->
                         <div class="mb-3">
                             <label class="form-label" for="phone_number">Phone Number</label>
-                            <input class="form-control" id="phone_number" name="phone_number" type="text" value="<?php echo $user->phone_number ?>"/>
+                            <input class="form-control" id="phone_number" name="phone_number" type="text" value="<?php echo $user->phone_number ?>" required/>
                         </div>
 
                         <!-- Password input -->
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input class="form-control" id="password" name="password" type="text" value="<?php echo $user->password ?>"/>
+                            <input class="form-control" id="password" name="password" type="text" value="<?php echo $user->password ?>" required/>
                         </div>
 
                         <!-- Access Level input -->

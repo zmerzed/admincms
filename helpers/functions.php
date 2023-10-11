@@ -32,10 +32,10 @@ function displayErrors($errors) {
 
 	foreach ($errors as $error) {
 
-		$errorStr .= $error;
+		$errorStr .= $error . "<br>";
 	}
 
-	$errorStr .= "</div>";
+	$errorStr .= "</div><br>";
 
 	return $errorStr;
 }

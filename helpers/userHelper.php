@@ -90,9 +90,22 @@ function userTotal()
  * @return boolean
  *
  **/
-function userUpdate()
+function userUpdate($user)
 {
+	global $db;
 
+	try {
+
+		$sql = "UPDATE users SET name='{$user->name}', username='{$user->username}', password='{$user->password}', phone_number='{$user->phone_number}', access_level={$user->access_level}, updated_at=now() WHERE id={$user->id}";
+
+		mysqli_query($db->link, $sql);
+		$db->link->close();
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
 }
 
 /** 
@@ -110,15 +123,58 @@ function userFindById($id=null)
 		 $query = "SELECT * FROM `users` where id={$id} limit 1";
 		 $result = mysqli_query($db->link, $query);
 		
-		   if ($result->num_rows > 0) 
-		   {
-			   return (object) $result->fetch_assoc(); 
-		   } 
+		if ($result->num_rows > 0) 
+		{
+			return (object) $result->fetch_assoc(); 
+		} 
 	} catch (\Exception) {
 		
 	}
 
 	return productGetEmptyForm();
+}
+
+/** 
+ *	
+ * check by username
+ * @return a boolean
+ *
+ **/
+function userIsExistUserName($user)
+{
+
+	global $db;
+	
+	try {
+		if ($user->id) 
+		{
+			$query = "SELECT * FROM `users` where username='{$user->username}' limit 1";
+			$result = mysqli_query($db->link, $query);
+		   
+			if ($result->num_rows > 0) 
+			{
+				$existingUser = (object) $result->fetch_assoc();
+				if ($existingUser->id != $user->id) {
+					return true;
+				}
+			} 
+
+		} else {
+
+			$query = "SELECT * FROM `users` where username='{$user->username}' limit 1";
+			$result = mysqli_query($db->link, $query);
+			
+			if ($result->num_rows > 0) 
+			{
+				return true;
+			} 
+		}
+
+	} catch (\Exception) {
+		
+	}
+
+	return false;
 }
 
 /** 
