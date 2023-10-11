@@ -45,7 +45,16 @@
                             <a href="/dashboard/history" class="nav-link" href="layout-static.html">Listing</a>
                         </nav>
                     </div>
-
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsInventory" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
+                        Reports
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayoutsInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a href="/dashboard/reports" class="nav-link" href="layout-static.html">Listing</a>
+                        </nav>
+                    </div>
                     <?php } ?>
                 </div>
             </div>
