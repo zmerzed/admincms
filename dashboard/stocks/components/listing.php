@@ -1,4 +1,4 @@
-<div id="layoutSidenav_content">
+z<div id="layoutSidenav_content">
     <?php 
         require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
         $listing = productList([]);
@@ -9,9 +9,6 @@
             <div class="row justify-content-between mt-4 mb-4">
                 <div class="col">
                     <h2 class="mt-4 mb-4">Supplies</h2>
-                </div>
-                <div class="col pt-4">
-                    <a href="/dashboard/stocks/create.php" type="button" class="btn btn-primary ">Create</a>
                 </div>
             </div>
             <div class="card mb-4">
@@ -42,7 +39,6 @@
                                         '</div></td>';
                                     echo "
                                     <td>
-                                        <a href=\"/dashboard/stocks/edit.php?id={$product->product_id}\" type=\"button\" class=\"btn btn-secondary\">Edit</a>
                                         <a href=\"/dashboard/stocks/actions/delete.php?id={$product->product_id}\"  type=\"button\" class=\"btn btn-warning\">Delete</a>
                                     </td>";
                                     echo '

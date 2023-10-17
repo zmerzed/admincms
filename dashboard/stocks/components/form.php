@@ -41,7 +41,7 @@
                             <label class="form-label" for="quantity">Category</label>
                             <select class="form-select" name="category">
                                 <option value="kitchen" <?php echo ($product->category == 'kitchen') ? 'selected' : '' ?>>Kitchen</option>
-                                <option value="furniture" <?php echo ($product->category == 'furniture') ? 'selected' : '' ?>>Furniture</option>
+                                <option value="drinks" <?php echo ($product->category == 'drinks') ? 'selected' : '' ?>>Drinks</option>
                             </select>
                         </div>
                         

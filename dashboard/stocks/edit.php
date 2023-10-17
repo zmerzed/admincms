@@ -3,6 +3,6 @@
 <?php include_once(DASHBOARD_ROOT_PATH . '/layouts/leftnav.php') ?>
 
 <!-- main content here -->
-<?php include_once(DASHBOARD_ROOT_PATH . '/stocks/components/form.php') ?>
+<?php include_once(DASHBOARD_ROOT_PATH . '/stocks/updatestock.php') ?>
 
 <?php include_once(DASHBOARD_ROOT_PATH . '/layouts/footer.php') ?>

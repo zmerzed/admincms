@@ -26,6 +26,139 @@ function productStore($product)
 
 /** 
  *	
+ * updating a product record
+ * @return boolean
+ *
+ **/
+function productQuantityUpdate($product)
+{
+	global $db;
+
+	try {
+
+		$sql = "UPDATE products SET quantity={$product->quantity}, updated_at=now() WHERE product_id={$product->product_id}";
+
+		mysqli_query($db->link, $sql);
+		$db->link->close();
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
+
+/** 
+ *	
+ * inserting a product log
+ * @return boolean
+ *
+ **/
+function productLogStore($product, $mode, $quantity) 
+{
+	if (empty($mode)) {
+
+		return false;
+	}
+
+	global $db;
+	
+	try {
+		$sql = "INSERT INTO product_logs (mode, quantity, product_id, created_at) 
+				VALUES ('{$mode}', $quantity, {$product->product_id}, now())";
+		mysqli_query($db->link, $sql);
+		//$db->link->close();
+
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
+
+/** 
+ *	
+ * inserting a product log
+ * @return boolean
+ *
+ **/
+function productLogTotal($params, $mode='') 
+{
+	if (empty($mode)) {
+
+		return false;
+	}
+
+	global $db;
+	
+	try {
+		$query = "";
+
+		// dd($params);
+		if(isset($params['date_from']) && isset($params['date_to'])) {
+			$query =  "SELECT SUM(quantity) as total FROM `product_logs` where mode='{$mode}' and created_at";
+			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}')";
+		}
+		
+		if (isset($params['product_id'])) {
+			$query .= " AND product_id={$params['product_id']}";
+		}
+
+		$result = mysqli_query($db->link, $query);
+		 
+		while($row = $result->fetch_assoc())
+		{
+			return $row['total'];
+		}
+
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
+
+/** 
+ *	
+ * getting a list of products in
+ * @return list of objects
+ *
+ **/
+function productGetProductsByLogs($params)
+{
+	global $db;
+	
+	try {
+		$query = "SELECT distinct product_id FROM `product_logs`";
+
+		if(isset($params['date_from']) && isset($params['date_to'])) {
+			$query =  "SELECT distinct product_id FROM `product_logs` WHERE created_at";
+			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}')";
+		}
+		
+		$result = mysqli_query($db->link, $query);
+		 
+		   if ($result->num_rows > 0) 
+		   {
+			   $listing = [];
+			   while($row = $result->fetch_assoc())
+			   {
+				   $listing[] = (object) $row;
+			   }
+
+			   return $listing;
+		   }
+
+	} catch (\Exception) {
+		
+	}
+
+	return [];
+}
+
+/** 
+ *	
  * getting a list of products
  * @return list of objects
  *
