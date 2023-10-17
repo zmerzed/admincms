@@ -277,6 +277,9 @@ function productDelete($id=null)
 		$query = "DELETE FROM `products` where product_id={$id} limit 1";
 		$result = mysqli_query($db->link, $query);
 		
+		$query = "DELETE FROM `product_logs` where product_id={$id}";
+		$result = mysqli_query($db->link, $query);
+		
 	} catch (\Exception) {
 		
 	}

@@ -30,9 +30,9 @@
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($listing as $user) {
+                            foreach ($listing as $key => $user) {
                                 echo '<tr>';
-                                echo '<th scope=\"row\">' . $user->id . '</th>';
+                                echo '<th scope=\"row\">' . ($key + 1) . '</th>';
                                 echo '<td>' . $user->username . "</td>";
                                 echo '<td>' . $user->name . '</td>';
                                 echo '<td>' . $user->phone_number . '</td>';

@@ -19,7 +19,7 @@ z<div id="layoutSidenav_content">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">No.</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Category</th>
                                 <th scope="col">Quantity</th>
@@ -29,10 +29,10 @@ z<div id="layoutSidenav_content">
                         </thead>
                         <tbody>
                             <?php
-                                foreach($listing as $product) {
+                                foreach($listing as $key => $product) {
                                     $lowStockClass = $product->quantity <= 10 ? 'text-danger' : '';
                                     echo '<tr>';
-                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
+                                    echo '<th scope=\"row\">' . ($key + 1) . '</th>';
                                     echo '<td>' . $product->product_name . "</td>";
                                     echo '<td>' . $product->category . '</td>';
                                     echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 

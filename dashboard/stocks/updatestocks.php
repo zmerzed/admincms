@@ -8,17 +8,18 @@
                 $mode = $_POST['mode'];
                 $quantity = $_POST['quantity'];
                 if ($mode == 'in') {
-                    // increment the product quantity
                     productLogStore($product, $_POST['mode'], $quantity);
                     $product->quantity = $product->quantity + $quantity;
                     productQuantityUpdate($product);
                 } else {
-                    //dd($_POST);
                     productLogStore($product, $_POST['mode'], $quantity);
                     $product->quantity = $product->quantity - $quantity;
                     productQuantityUpdate($product);
                 }
+
+                header('location: /dashboard/stocks/updatestock.php');
             }
+
         ?>
         <main>
             <div class="container-fluid px-4">

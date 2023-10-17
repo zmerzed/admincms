@@ -33,13 +33,13 @@
                         <!-- Product Name input -->
                         <div class="mb-3">
                             <label class="form-label" for="productName">Product Name</label>
-                            <input class="form-control" id="productName" name="product_name" type="text" value="<?php echo $product->product_name ?>"/>
+                            <input class="form-control" id="productName" name="product_name" type="text" value="<?php echo $product->product_name ?>" required/>
                         </div>
 
                         <!-- Category input -->
                         <div class="mb-3">
                             <label class="form-label" for="quantity">Category</label>
-                            <select class="form-select" name="category">
+                            <select class="form-select" name="category" required>
                                 <option value="kitchen" <?php echo ($product->category == 'kitchen') ? 'selected' : '' ?>>Kitchen</option>
                                 <option value="drinks" <?php echo ($product->category == 'drinks') ? 'selected' : '' ?>>Drinks</option>
                             </select>
@@ -48,7 +48,7 @@
                          <!-- Quantity input -->
                          <div class="mb-3">
                             <label class="form-label" for="quantity">Quantity</label>
-                            <input class="form-control" id="quantity" max="200" name="quantity" type="number" value="<?php echo $product->quantity ?>"/>
+                            <input class="form-control" id="quantity" max="200" name="quantity" type="number" value="<?php echo $product->quantity ?>" required/>
                         </div>
 
                         <!-- Form submit button -->

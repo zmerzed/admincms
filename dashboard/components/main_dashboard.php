@@ -96,20 +96,12 @@
                 <label>Year:</label>
                 <select name="year">
                   <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
-                  <option value="2022" <?php echo $year == 2022 ? 'selected' : '' ?>>2022</option>
-                  <option value="2021" <?php echo $year == 2021 ? 'selected' : '' ?>>2021</option>
-                  <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
                 </select>
-                <input type="submit" value="search" />
             </div>
             <style>
               .bargraph {
-                width: 700px;
-                height: 300px;
                 margin: 50px;
                 padding: 10px;
-                background-color: rgba(33, 37, 41, 0.7);
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
               }
             </style>
             <div class="bargraph" id="barchart_material"></div>
@@ -167,13 +159,11 @@
                 <option value="12" <?php echo $month == 12 ? 'selected' : '' ?>>December</option>
 
               </select>
-              <input type="submit" value="search" />
+              <input type="submit" value="run" />
               </form>
             </div>
             <style>
               .productgraph {
-                width: 700px;
-                height: 300px;
                 margin-right: 40px;
                 margin-top: 40px;
               }
@@ -233,7 +223,7 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 2
+            Graph 3
           </div>
           <div class="card-body">
             <!-- third graph -->
