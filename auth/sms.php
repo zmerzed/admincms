@@ -1,12 +1,12 @@
 <?php 
-$mainSID = 'AC9d90ba895ec331d0dbbce37d88eee992';
+$mainSID = 'AC442c3f897147a382c1f606a9fdef3119';
 $id = $mainSID;
-$secret = 'a1fbbc55e186ebd9380be07ee7520b3f';
-$url = "https://api.twilio.com//2010-04-01/Accounts/{$mainSID}/Messages";
+$secret = '8e1b395f3c9c94778fecd662e4980dfa';
+$url = "https://api.twilio.com/2010-04-01/Accounts/AC442c3f897147a382c1f606a9fdef3119/Messages.json";
 $digits = '123';
-$to = '+639233980986'; // twilio trial verified number
-$from = '+19288772240';
-$body = 'Remz Your verification code: ' . $digits;
+$to = '+639945181366'; // twilio trial verified number
+$from = '+12516470370';
+$body = 'abing code: ' . $digits;
 $data = array (
     'From' => $from,
     'To' => $to,
@@ -20,5 +20,9 @@ curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 curl_setopt($x, CURLOPT_USERPWD, "$id:$secret");
 curl_setopt($x, CURLOPT_POSTFIELDS, $post);
-$y = curl_exec($x);
+//$y = curl_exec($x);
+print_r($y);
 curl_close($x);
+
+
+// "Low stock level: ProductName, ID: recordID
