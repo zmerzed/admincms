@@ -1,14 +1,28 @@
 z<div id="layoutSidenav_content">
     <?php 
         require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
-        $listing = productList([]);
 
+        $search = '';
+
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+        }
+
+        $listing = productList([
+            'search' => $search
+        ]);
     ?>
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
                 <div class="col">
                     <h2 class="mt-4 mb-4">Supplies</h2>
+                </div>
+                <div class="col">
+                <form class="d-flex" method="GET" action="stocks">
+                    <input class="form-control me-2" type="text" name="search" value="<?php echo $search; ?>">
+                    <input type="submit" class="btn btn-outline-success" type="button"value="search">
+                </form>
                 </div>
             </div>
             <div class="card mb-4">

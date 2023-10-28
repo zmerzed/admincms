@@ -9,8 +9,8 @@
 
   $error_messages = [];
   $year = isset($_GET['year']) ? $_GET['year'] : 2023;
-  $month = isset($_GET['month']) ? $_GET['month'] : 1;
-
+  $month = isset($_GET['month']) ? $_GET['month'] : date('m');
+  $monthName = date('M');
   $month_from = 1;
   $month_to = 12;
   $data = [];
@@ -82,12 +82,18 @@
   }
   ?>
 
-  <div class="container">
+  <div class="container" style="padding-bottom: 0">
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" onclick="takeScreenShot()">Download as pdf</button>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="dashboard">
     <div class="row">
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 1
           </div>
           <div class="card-body">
             <!-- first graph -->
@@ -138,26 +144,13 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 2
           </div>
           <div class="card-body">
             <!-- second graph -->
             <div>
               <label>Month:</label>
               <select name="month">
-                <option value="01" <?php echo $month == 1 ? 'selected' : '' ?>>January</option>
-                <option value="02" <?php echo $month == 2 ? 'selected' : '' ?>>Feburary</option>
-                <option value="03" <?php echo $month == 3 ? 'selected' : '' ?>>March</option>
-                <option value="04" <?php echo $month == 4 ? 'selected' : '' ?>>April</option>
-                <option value="05" <?php echo $month == 5 ? 'selected' : '' ?>>May</option>
-                <option value="06" <?php echo $month == 6 ? 'selected' : '' ?>>June</option>
-                <option value="07" <?php echo $month == 7 ? 'selected' : '' ?>>July</option>
-                <option value="08" <?php echo $month == 8 ? 'selected' : '' ?>>August</option>
-                <option value="09" <?php echo $month == 9 ? 'selected' : '' ?>>September</option>
-                <option value="10" <?php echo $month == 10 ? 'selected' : '' ?>>October</option>
-                <option value="11" <?php echo $month == 11 ? 'selected' : '' ?>>November</option>
-                <option value="12" <?php echo $month == 12 ? 'selected' : '' ?>>December</option>
-
+                <option value="<?php echo $month ?>"><?php echo $monthName ?></option>
               </select>
               <input type="submit" value="run" />
               </form>
@@ -223,7 +216,6 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 3
           </div>
           <div class="card-body">
             <!-- third graph -->
@@ -300,10 +292,26 @@
                 Plotly.newPlot('myDiv', data, layout);
               })
             </script>
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
+  <script>
+    window.takeScreenShot = function() {
+      html2canvas(document.getElementById('dashboard')).then(function(canvas) {
+        var wid
+        var hgt
+        // document.body.appendChild(canvas)
+        var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
+        var hratio = hgt / wid
+        var doc = new jsPDF('p', 'pt', 'a4');
+        var width = doc.internal.pageSize.width;
+        var height = width * hratio
+        console.log('width', width / 2)
+        console.log('height', height / 2)
+        doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
+        doc.save('product_overview.pdf');
+      });
+    }
+  </script>

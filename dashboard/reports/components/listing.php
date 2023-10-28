@@ -5,44 +5,43 @@
 </style>
 <div id="layoutSidenav_content">
     <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
-        $month_from = 1;
-        $month_to = 1;
-        $error_messages = [];
-        $data = [];
+    $month_from = 1;
+    $month_to = 1;
+    $error_messages = [];
+    $data = [];
 
-        if (isset($_GET['month_from'])) {
-            $month_from = $_GET['month_from'];
-            $month_to = $_GET['month_from'];
+    if (isset($_GET['month_from'])) {
+        $month_from = $_GET['month_from'];
+        $month_to = $_GET['month_from'];
+    }
+
+    if ($month_to < $month_from) {
+        $error_messages = ["Error: <strong>Month From</strong> must be less than to <strong>Month To</strong>"];
+    } else {
+
+        foreach (range($month_from, $month_to) as $number) {
+
+            $monthNumber = sprintf("%02d", $number);
+            $date = "2023-{$monthNumber}-01";
+
+            $monthData = [
+                'month' => date("F", strtotime($date)),
+                'month_value' => $number,
+                'date' => $date
+            ];
+            $listing = productList([
+                'date_from' => date("Y-m-01", strtotime($date)),
+                'date_to' => date("Y-m-t", strtotime($date))
+            ]);
+
+            $monthData['listing'] = $listing;
+            $data[] = $monthData;
         }
 
-        if ($month_to < $month_from) {
-            $error_messages = ["Error: <strong>Month From</strong> must be less than to <strong>Month To</strong>"];
-        } else {
-
-            foreach (range($month_from, $month_to) as $number) 
-            {
-
-                $monthNumber = sprintf("%02d", $number);
-                $date = "2023-{$monthNumber}-01";
-
-                $monthData = [
-                    'month' => date("F", strtotime($date)),
-                    'month_value' => $number,
-                    'date' => $date
-                ];
-                $listing = productList([
-                    'date_from' => date("Y-m-01", strtotime($date)),
-                    'date_to' => date("Y-m-t", strtotime($date))
-                ]);
-
-                $monthData['listing'] = $listing;
-                $data[] = $monthData;
-            }
-            
-            //dd($data); display structure
-        }
+        //dd($data); display structure
+    }
     ?>
 
     <main>
@@ -76,16 +75,19 @@
                         <a class="btn btn-secondary btn-md" href="/dashboard/reports">Reset</a>
                     </div>
                 </form>
+                <div class="col pt-4">
 
+                    <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
+                </div>
             </div>
 
             <!-- display if any errors -->
-            <?php if (count($error_messages) > 0) { 
+            <?php if (count($error_messages) > 0) {
                 echo displayErrors($error_messages);
             } ?>
-            <div class="row">
+            <div class="row" id="reports">
                 <?php if (count($error_messages) <= 0) { ?>
-                    <?php foreach($data as $month) { ?>
+                    <?php foreach ($data as $month) { ?>
                         <div class="col">
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -106,13 +108,13 @@
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    foreach($month['listing'] as $product) {
-                                                        echo '<tr>';
-                                                        echo '<th scope=\"row\">' . $product->product_id . '</th>';
-                                                        echo '<td>' . $product->product_name . "</td>";
-                                                        echo '<td>' . $product->category . '</td>';
-                                                        echo '<td>' . $product->quantity . '</td>';
-                                                    }
+                                                foreach ($month['listing'] as $product) {
+                                                    echo '<tr>';
+                                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
+                                                    echo '<td>' . $product->product_name . "</td>";
+                                                    echo '<td>' . $product->category . '</td>';
+                                                    echo '<td>' . $product->quantity . '</td>';
+                                                }
                                                 ?>
                                             </tbody>
                                         </table>
@@ -126,3 +128,21 @@
         </div>
     </main>
 </div>
+<script>
+    window.takeScreenShot = function() {
+        html2canvas(document.getElementById('reports')).then(function(canvas) {
+            var wid
+            var hgt
+            // document.body.appendChild(canvas)
+            var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
+            var hratio = hgt / wid
+            var doc = new jsPDF('p', 'pt', 'a4');
+            var width = doc.internal.pageSize.width;
+            var height = width * hratio
+            console.log('width', width / 2)
+            console.log('height', height / 2)
+            doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
+            doc.save('reports.pdf');
+        });
+    }
+</script>

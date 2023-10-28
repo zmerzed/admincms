@@ -48,7 +48,7 @@
                          <!-- Quantity input -->
                          <div class="mb-3">
                             <label class="form-label" for="quantity">Quantity</label>
-                            <input class="form-control" id="quantity" max="200" name="quantity" type="number" value="<?php echo $product->quantity ?>" required/>
+                            <input class="form-control" id="quantity" max="200" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="quantity" type="number" value="<?php echo $product->quantity ?>" required/>
                         </div>
 
                         <!-- Form submit button -->

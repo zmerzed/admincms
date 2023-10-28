@@ -169,6 +169,10 @@ function productList($params)
 	
 	try {
 		$query = "SELECT * FROM `products`";
+		
+		if (isset($params['search'])) {
+			$query = "SELECT * FROM `products` where product_name like '%{$params['search']}'";
+		}
 
 		if(isset($params['date_from']) && isset($params['date_to'])) {
 			$query =  "SELECT * FROM `products` WHERE created_at";
