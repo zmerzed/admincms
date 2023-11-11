@@ -1,7 +1,7 @@
 <div id="layoutSidenav_content">
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
-
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/userHelper.php';
     $search = '';
     $error_messages = [];
 
@@ -28,13 +28,11 @@
             } else {
                 productLogStore($product, $_POST['mode'], $quantity);
                 $product->quantity = $product->quantity + $quantity;
+
                 productQuantityUpdate($product);
     
                 if ($product->quantity > $product->low_quantity_level) {
-                    // send sms
-                    // sendSMS()
-                    // productUpdateStatus($product, null); //
-                    //$message = getAnalyticalStockMessage()
+                    productUpdateStatus($product, 'Stocked');
                 }
             }
            
@@ -45,15 +43,16 @@
             } else if ($quantity > $product->quantity)  {
                 $error_messages = ["Error: <strong>Stock Out Quantity: ({$quantity}) cannot be greater than product existing quantity</strong> "];
             } else {
-                productLogStore($product, $_POST['mode'], $quantity);
+                //productLogStore($product, $_POST['mode'], $quantity);
                 $product->quantity = $product->quantity - $quantity;
                 productQuantityUpdate($product);
     
                 if ($product->quantity <= $product->low_quantity_level) {
                     // send sms
-                    // sendSMS()
-                    //productUpdateStatus($product, 'Alerted'); //
-                    //$message = getAnalyticalStockMessage()
+                    $adminUser = getAdminUser();
+                    $suggestedQuantity = getSuggestQuantity($product);
+                    // sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
+                    productUpdateStatus($product, 'Alerted');
                 }
             }
             
@@ -106,7 +105,7 @@
                             foreach ($listing as $no => $product) {
                                 $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';
                                 echo '<tr>';
-                                echo '<th scope="row">' . $no + 1 . '</th>';
+                                echo '<th scope="row">' . $no + 1 . "-id:{$product->product_id}" . '</th>';
                                 echo '<td>' . $product->product_name . '</td>';
                                 echo '<td>' . $product->category . '</td>';
                                 echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . '</div></td>';
@@ -203,7 +202,7 @@
                         </div>
                         <input type="hidden" name="mode" value="out" />
                         <div class="mb-3">
-                            <label for="stockout_quantity" class="form-label">Stock in Quantity</label>
+                            <label for="stockout_quantity" class="form-label">Stock out Quantity</label>
                             <input type="number" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="quantity" required />
                         </div>
                     </div>

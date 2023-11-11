@@ -9,9 +9,10 @@
 
     $month_from = 1;
     $month_to = 1;
+    $currentMonth = date('m');
     $error_messages = [];
     $data = [];
-
+    $year = isset($_GET['year']) ? $_GET['year'] : date("Y");
     if (isset($_GET['month_from'])) {
         $month_from = $_GET['month_from'];
         $month_to = $_GET['month_from'];
@@ -24,7 +25,7 @@
         foreach (range($month_from, $month_to) as $number) {
 
             $monthNumber = sprintf("%02d", $number);
-            $date = "2023-{$monthNumber}-01";
+            $date = "{$year}-{$monthNumber}-01";
 
             $monthData = [
                 'month' => date("F", strtotime($date)),
@@ -72,6 +73,22 @@
                             <option value="12" <?php echo $month_from == 12 ? 'selected' : '' ?>>December</option>
                         </select>
                     </div>
+                    <div class="col lg-4">
+                        <label class="form-label" for="quantity">Year</label>
+                        <select class="form-select" name="year">
+                            <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
+                            <option value="2021" <?php echo $year == 2021 ? 'selected' : '' ?>>2021</option>
+                            <option value="2022" <?php echo $year == 2022 ? 'selected' : '' ?>>2022</option>
+                            <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
+                            <option value="2024" <?php echo $year == 2024 ? 'selected' : '' ?>>2024</option>
+                            <option value="2025" <?php echo $year == 2025 ? 'selected' : '' ?>>2025</option>
+                            <option value="2026" <?php echo $year == 2026 ? 'selected' : '' ?>>2026</option>
+                            <option value="2027" <?php echo $year == 2027 ? 'selected' : '' ?>>2027</option>
+                            <option value="2028" <?php echo $year == 2028 ? 'selected' : '' ?>>2028</option>
+                            <option value="2029" <?php echo $year == 2029 ? 'selected' : '' ?>>2029</option>
+                            <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
+                        </select>
+                    </div>
                     <div class="col pt-4">
                         <input class="btn btn-primary btn-md" type="submit" value="Search" />
                         <a class="btn btn-secondary btn-md" href="/dashboard/reports">Reset</a>
@@ -106,17 +123,24 @@
                                                     <th scope="col">Product Name</th>
                                                     <th scope="col">Category</th>
                                                     <th scope="col">Quantity</th>
+                                                    <th scope="col">Low Quantity Level</th>
                                                     <th scope="col">Action</th>
+                                                    <th scope="col">Suggested Quantity</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($month['listing'] as $product) { ?>
+                                                    <?php $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';?>
                                                     <?php echo '<tr>'; ?>
                                                     <?php echo '<th scope=\"row\">' . $product->product_id . '</th>'; ?>
                                                     <?php echo '<td>' . $product->product_name . "</td>"; ?>
                                                     <?php echo '<td>' . $product->category . '</td>'; ?>
-                                                    <?php echo '<td>' . $product->quantity . '</td>'; ?>
+                                                    <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
+                                        '</div></td>'; ?>
+                                                    <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->low_quantity_level . 
+                                        '</div></td>'; ?>
                                                     <?php echo "<td><button class=\"btn btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#logModal{$product->product_id}\">view logs</button></td>"; ?>
+                                                    <?php echo '<td>' . getSuggestQuantity($product, $currentMonth, $year - 1) . '</td>'; ?>
                                                     <?php echo '</tr>'; ?>
                                                     <!-- Modal for view logs -->
                                                     <div class="modal fade" id="logModal<?php echo $product->product_id; ?>" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">

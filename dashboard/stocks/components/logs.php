@@ -8,7 +8,7 @@ z<div id="layoutSidenav_content">
             $search = $_GET['search'];
         }
 
-        $productLogs = productLogs();
+        $productLogs = productLogs(['order_by_date' => true]);
     ?>
     <main>
         <div class="container-fluid px-4">
@@ -32,6 +32,7 @@ z<div id="layoutSidenav_content">
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Mode</th>
                                 <th scope="col">Quantity</th>
+                                <th scope="col">Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,6 +43,7 @@ z<div id="layoutSidenav_content">
                                     echo '<td>' . $log->product_name . "</td>";
                                     echo '<td>' . $log->mode . '</td>';
                                     echo '<td>' . $log->log_quantity . '</td>';
+                                    echo '<td>' . $log->log_created_at . '</td>';
                                     echo '</tr>';
                                 }
                             ?>

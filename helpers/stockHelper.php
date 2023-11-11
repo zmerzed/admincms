@@ -35,11 +35,13 @@ function productQuantityUpdate($product)
 	global $db;
 
 	try {
-
+	
 		$sql = "UPDATE products SET quantity={$product->quantity}, updated_at=now() WHERE product_id={$product->product_id}";
-
 		mysqli_query($db->link, $sql);
-		$db->link->close();
+		if(is_resource($db->link) && get_resource_type($db->link)==='mysql link'){
+			//dd('test');
+			$db->link->close();
+		}
 		return true;
 	} catch (\Exception) {
 		
@@ -48,6 +50,33 @@ function productQuantityUpdate($product)
 	return false;
 }
 
+/** 
+ *	
+ * updating a product status
+ * @return boolean
+ *
+ **/
+function productUpdateStatus($product, $status)
+{
+	global $db;
+
+	try {
+
+		$sql = "UPDATE products SET status='{$status}', updated_at=now() WHERE product_id={$product->product_id} LIMIT 1";
+
+		mysqli_query($db->link, $sql);
+		//$db->link->close();
+		if(is_resource($db->link) && get_resource_type($db->link)==='mysql link'){
+			$db->link->close(); //Object oriented style
+			//mysqli_close($connection); //Procedural style 
+		}
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
 /** 
  *	
  * updating a productLowQuantityLevelUpdate
@@ -204,6 +233,11 @@ function productLogs($params=[])
 		
 		if(isset($params['date_from']) && isset($params['date_to'])) {
 			$query .= " WHERE product_logs.created_at BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}') order by product_logs.created_at ASC";
+		}
+
+		if (isset($params['order_by_date']))
+		{
+			$query .= " order by product_logs.created_at DESC";
 		}
 
 		$result = mysqli_query($db->link, $query);
@@ -386,7 +420,47 @@ function productGetEmptyForm()
 	];
 }
 
-function getAnalyticalStockMessage()
+function getSuggestQuantity($product, $month=null, $year=null)
 {
-	// $countLogs
+
+	if ($product->quantity <= $product->low_quantity_level) {
+
+		$suggestedQuantity = $product->low_quantity_level * 1.5;
+
+		return ceil($suggestedQuantity);
+	}
+
+	// $totalStockIn = 0;
+	// $totalStockOut = 0;
+	
+	//global $db;
+	
+	// try {
+		// $date = "{$year}-{$month}-01";
+		// $dateFrom = date("Y-m-01", strtotime($date));
+		// $dateTo = date("Y-m-t", strtotime($date));
+
+		// $query1 = "SELECT SUM(quantity) FROM `product_logs` where `product_id`={$productId}";
+		// $query1 .= " AND created_at BETWEEN '{$dateFrom}' AND LAST_DAY('{$dateTo}') AND mode='in'";
+
+		// $result1 = mysqli_query($db->link, $query1);
+		// while($row = mysqli_fetch_array($result1)) {
+		// 	$totalStockIn = $row['SUM(quantity)'];
+		// }
+
+		// $query2 = "SELECT SUM(quantity) FROM `product_logs` where `product_id`={$productId}";
+		// $query2 .= " AND created_at BETWEEN '{$dateFrom}' AND LAST_DAY('{$dateTo}') AND mode='out'";
+
+		// $result2 = mysqli_query($db->link, $query2);
+		// while($row = mysqli_fetch_array($result2)) {
+		// 	$totalStockOut = $row['SUM(quantity)'];
+		// }
+
+		// return "lastYrStockIn: {$totalStockIn}, lastYrStockOut: {$totalStockOut}";
+
+	// } catch (\Exception) {
+		
+	// }
+
+	return '';
 }

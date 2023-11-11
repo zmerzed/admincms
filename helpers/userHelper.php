@@ -220,3 +220,29 @@ function userAdmins()
 	$users = [];
 	return $users;
 }
+
+/** 
+ *	
+ * get user admin
+ * @return a user
+ *
+ **/
+function getAdminUser()
+{
+
+	global $db;
+	
+	try {
+		 $query = "SELECT * FROM `users` where access_level=1 limit 1";
+		 $result = mysqli_query($db->link, $query);
+		
+		if ($result->num_rows > 0) 
+		{
+			return (object) $result->fetch_assoc(); 
+		} 
+	} catch (\Exception) {
+		
+	}
+
+	return null;
+}
