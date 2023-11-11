@@ -8,23 +8,21 @@ z<div id="layoutSidenav_content">
             $search = $_GET['search'];
         }
 
-        $listing = productList([
-            'search' => $search
-        ]);
+        $productLogs = productLogs();
     ?>
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <div class="col">
+                <!-- <div class="col">
                     <form class="d-flex" method="GET" action="stocks">
                         <input class="form-control me-2" type="text" name="search" value="<?php echo $search; ?>">
                         <input type="submit" class="btn btn-outline-success" type="button"value="search">
                     </form>
-                </div>
+                </div> -->
             </div>
             <div class="card mb-4">
                 <div class="card-header">
-                    List of Supplies
+                    Product Logs
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
@@ -32,30 +30,18 @@ z<div id="layoutSidenav_content">
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">Product Name</th>
-                                <th scope="col">Category</th>
+                                <th scope="col">Mode</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Low Quantity Level</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                foreach($listing as $key => $product) {
-                                    $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';
+                                foreach($productLogs as $key => $log) {
                                     echo '<tr>';
                                     echo '<th scope=\"row\">' . ($key + 1) . '</th>';
-                                    echo '<td>' . $product->product_name . "</td>";
-                                    echo '<td>' . $product->category . '</td>';
-                                    echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
-                                        '</div></td>';
-                                    echo "<td><div>" . $product->low_quantity_level . 
-                                        '</div></td>';
-                                    echo "<td>{$product->status}</td>";
-                                    echo "
-                                    <td>
-                                        <a href=\"/dashboard/stocks/actions/delete.php?id={$product->product_id}\"  type=\"button\" class=\"btn btn-warning\">Delete</a>
-                                    </td>";
+                                    echo '<td>' . $log->product_name . "</td>";
+                                    echo '<td>' . $log->mode . '</td>';
+                                    echo '<td>' . $log->log_quantity . '</td>';
                                     echo '</tr>';
                                 }
                             ?>

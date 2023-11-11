@@ -27,8 +27,8 @@
         }
         .modal-content {
             border-radius: 10px; 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2 10px rgba(0, 0, 0, 0.2); 
+            background-color: rgba(255, 255, 255, 1);
         }
         .modal-header {
             background-color: #343a40; 
@@ -43,7 +43,7 @@
         .modal-body input {
             width: 100%; 
             margin-bottom: 20px;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 2 );
         }
     </style>
     

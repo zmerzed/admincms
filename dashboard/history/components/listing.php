@@ -40,15 +40,14 @@
                     'month_value' => $number,
                     'date' => $date
                 ];
-                $listing = productList([
+                $logs = productLogs([
                     'date_from' => date("Y-m-01", strtotime($date)),
                     'date_to' => date("Y-m-t", strtotime($date))
                 ]);
 
-                $monthData['listing'] = $listing;
+                $monthData['logs'] = $logs;
                 $data[] = $monthData;
-            }
-            
+            } 
             //dd($data); display structure
         }
     ?>
@@ -133,26 +132,32 @@
                                     <?php echo $month['month']; ?>
                                 </div>
                                 <div class="card-body">
-                                    <?php if (count($month['listing']) <= 0) {
+                                    <?php if (count($month['logs']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">ID</th>
                                                     <th scope="col">Product Name</th>
                                                     <th scope="col">Category</th>
                                                     <th scope="col">Quantity</th>
+                                                    <th scope="col">Mode</th>
+                                                    <th scope="col">Mode Quantity</th>
+                                                    <th scope="col">Log at</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    foreach($month['listing'] as $product) {
+                                                    foreach($month['logs'] as $product) {
                                                         echo '<tr>';
-                                                        echo '<th scope=\"row\">' . $product->product_id . '</th>';
                                                         echo '<td>' . $product->product_name . "</td>";
                                                         echo '<td>' . $product->category . '</td>';
                                                         echo '<td>' . $product->quantity . '</td>';
+                                                        echo '<td>' . $product->mode . '</td>';
+                                                        echo '<td>' . $product->log_quantity . '</td>';
+                                                        echo '<td>' . $product->created_at . '</td>';
+
                                                     }
                                                 ?>
                                             </tbody>

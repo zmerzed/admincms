@@ -33,7 +33,8 @@
             ];
             $listing = productList([
                 'date_from' => date("Y-m-01", strtotime($date)),
-                'date_to' => date("Y-m-t", strtotime($date))
+                'date_to' => date("Y-m-t", strtotime($date)),
+                'product_logs' => true
             ]);
 
             $monthData['listing'] = $listing;
@@ -42,6 +43,7 @@
 
         //dd($data); display structure
     }
+
     ?>
 
     <main>
@@ -54,7 +56,7 @@
             <div class="row justify-content-between mb-4">
                 <form id="productForm" method="GET" action='reports'>
                     <div class="col lg-6">
-                        <label class="form-label" for="quantity">Month From:</label>
+                        <label class="form-label" for="quantity">Month</label>
                         <select class="form-select" name="month_from">
                             <option value="01" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
                             <option value="02" <?php echo $month_from == 2 ? 'selected' : '' ?>>February</option>
@@ -104,18 +106,41 @@
                                                     <th scope="col">Product Name</th>
                                                     <th scope="col">Category</th>
                                                     <th scope="col">Quantity</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                foreach ($month['listing'] as $product) {
-                                                    echo '<tr>';
-                                                    echo '<th scope=\"row\">' . $product->product_id . '</th>';
-                                                    echo '<td>' . $product->product_name . "</td>";
-                                                    echo '<td>' . $product->category . '</td>';
-                                                    echo '<td>' . $product->quantity . '</td>';
-                                                }
-                                                ?>
+                                                <?php foreach ($month['listing'] as $product) { ?>
+                                                    <?php echo '<tr>'; ?>
+                                                    <?php echo '<th scope=\"row\">' . $product->product_id . '</th>'; ?>
+                                                    <?php echo '<td>' . $product->product_name . "</td>"; ?>
+                                                    <?php echo '<td>' . $product->category . '</td>'; ?>
+                                                    <?php echo '<td>' . $product->quantity . '</td>'; ?>
+                                                    <?php echo "<td><button class=\"btn btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#logModal{$product->product_id}\">view logs</button></td>"; ?>
+                                                    <?php echo '</tr>'; ?>
+                                                    <!-- Modal for view logs -->
+                                                    <div class="modal fade" id="logModal<?php echo $product->product_id; ?>" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Logs</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <?php if (count($product->logs) > 0) { ?>
+                                                                    <ul class="list-group">
+                                                                        <?php foreach ($product->logs as $log) { ?>
+                                                                            <li><?php echo $log->mode ?> - Quantity: <?php echo $log->log_quantity ?></li>
+                                                                        <?php } ?>    
+                                                                    </ul>
+                                                                    <?php } else { ?>
+                                                                        <p>No logs available</p>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     <?php } ?>

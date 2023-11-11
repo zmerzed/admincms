@@ -2,7 +2,7 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <?php if (auth()->access_level == 1) { ?>
+                <?php if (auth()->access_level == 1 || auth()->access_level == 2) { ?>
                     <div class="sb-sidenav-menu-heading">Menu</div>
                     <a href="/dashboard/" class="nav-link" href="index.html">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -17,6 +17,7 @@
                 <nav class="sb-sidenav-menu-nested nav">
                     <a href="/dashboard/stocks" class="nav-link" href="layout-static.html">View Stock Data</a>
                     <a href="/dashboard/stocks/updatestock.php" class="nav-link" href="layout-sidenav-light.html">Update Stocks</a>
+                    <a href="/dashboard/stocks/product_logs.php" class="nav-link" href="layout-sidenav-light.html">Product Logs</a>
                 </nav>
 
                 <?php if (auth()->access_level == 1) { ?>

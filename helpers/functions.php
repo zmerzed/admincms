@@ -18,7 +18,8 @@ function login($username, $password)
 	return empty($resultData) ? false : true;
 }
 
-function dd($data) {
+function dd($data) 
+{
 
 	echo '<pre>';
 	print_r($data);
@@ -26,7 +27,8 @@ function dd($data) {
 	exit();
 }
 
-function displayErrors($errors) {
+function displayErrors($errors) 
+{
 
 	$errorStr = '<div class="col text-danger errors">';
 
@@ -38,4 +40,37 @@ function displayErrors($errors) {
 	$errorStr .= "</div><br>";
 
 	return $errorStr;
+}
+
+
+function sendSMS($toNumber=null, $message=null) 
+{
+
+	$mainSID = 'AC442c3f897147a382c1f606a9fdef3119';
+	$id = $mainSID;
+	$secret = '8e1b395f3c9c94778fecd662e4980dfa';
+	$url = "https://api.twilio.com/2010-04-01/Accounts/AC442c3f897147a382c1f606a9fdef3119/Messages.json";
+	
+	if ($message) 
+	{
+		$to = $toNumber; // twilio trial verified number
+		$from = '+12516470370';
+		$body = $message;
+		$data = array (
+			'From' => $from,
+			'To' => $to,
+			'Body' => $body,
+		);
+		$post = http_build_query($data);
+		$x = curl_init($url );
+		curl_setopt($x, CURLOPT_POST, true);
+		curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($x, CURLOPT_USERPWD, "$id:$secret");
+		curl_setopt($x, CURLOPT_POSTFIELDS, $post);
+		//$y = curl_exec($x);
+		// print_r($y);
+		curl_close($x);
+	}
 }

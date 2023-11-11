@@ -53,6 +53,7 @@ CREATE TABLE `products` (
   `product_id` int NOT NULL AUTO_INCREMENT,
   `product_name` varchar(100) NOT NULL,
   `quantity` int NOT NULL,
+  `low_quantity_level` int NOT NULL,
   `category` varchar(100) DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
@@ -66,7 +67,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'test',59,'drinks','2023-09-15','2023-10-17'),(2,'test2',11,'kitchen','2023-09-15','2023-09-15'),(3,'test2',3,'kitchen','2023-09-15','2023-09-15'),(4,'test2',4,'kitchen','2023-09-15','2023-09-15'),(5,'test2',101,'drinks','2023-09-15','2023-10-16'),(8,'test',33,'kitchen','2023-09-15','2023-09-15'),(9,'test',33,'kitchen','2023-09-15','2023-09-15'),(10,'tttt',22,'kitchen','2023-09-15','2023-09-15'),(11,'111',22,'kitchen','2023-09-15','2023-09-15'),(12,'aaa',25,'kitchen','2023-09-15','2023-10-17'),(16,'test2',11,'kitchen','2023-01-18','2023-09-18'),(17,'test',1,'kitchen','2023-10-01','2023-10-01');
+INSERT INTO `products` VALUES (1,'test',59,20,'drinks','2023-09-15','2023-10-17'),(2,'test2',11,5,'kitchen','2023-09-15','2023-09-15'),(3,'test2',3,15,'kitchen','2023-09-15','2023-09-15'),(4,'test2',4,10,'kitchen','2023-09-15','2023-09-15'),(5,'test2',101,50,'drinks','2023-09-15','2023-10-16'),(8,'test',33,10,'kitchen','2023-09-15','2023-09-15'),(9,'test',33,5,'kitchen','2023-09-15','2023-09-15'),(10,'tttt',22,11,'kitchen','2023-09-15','2023-09-15'),(11,'111',22,13,'kitchen','2023-09-15','2023-09-15'),(12,'aaa',25,20,'kitchen','2023-09-15','2023-10-17'),(16,'test2',11,10,'kitchen','2023-01-18','2023-09-18'),(17,'test',1,10,'kitchen','2023-10-01','2023-10-01');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 

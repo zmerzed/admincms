@@ -220,11 +220,3 @@ function userAdmins()
 	$users = [];
 	return $users;
 }
-
-function sendSMS()
-{
-	$users = userAdmins();
-	foreach ($users as $user) {
-		// insert sms code sending
-	}
-}

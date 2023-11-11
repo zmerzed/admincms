@@ -26,7 +26,7 @@ function productStore($product)
 
 /** 
  *	
- * updating a product record
+ * updating a product quantity
  * @return boolean
  *
  **/
@@ -37,6 +37,30 @@ function productQuantityUpdate($product)
 	try {
 
 		$sql = "UPDATE products SET quantity={$product->quantity}, updated_at=now() WHERE product_id={$product->product_id}";
+
+		mysqli_query($db->link, $sql);
+		$db->link->close();
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
+
+/** 
+ *	
+ * updating a productLowQuantityLevelUpdate
+ * @return boolean
+ *
+ **/
+function productLowQuantityLevelUpdate($product)
+{
+	global $db;
+
+	try {
+
+		$sql = "UPDATE products SET low_quantity_level={$product->low_quantity_level}, updated_at=now() WHERE product_id={$product->product_id}";
 
 		mysqli_query($db->link, $sql);
 		$db->link->close();
@@ -95,16 +119,20 @@ function productLogTotal($params, $mode='')
 	try {
 		$query = "";
 
-		// dd($params);
 		if(isset($params['date_from']) && isset($params['date_to'])) {
 			$query =  "SELECT SUM(quantity) as total FROM `product_logs` where mode='{$mode}' and created_at";
 			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}')";
 		}
 		
+		// if(isset($params['product_id'])) {
+		// 	$query .= " AND WHERE product_id={$params['product_id']}";
+		// }
+
 		if (isset($params['product_id'])) {
 			$query .= " AND product_id={$params['product_id']}";
 		}
 
+		//dd($query);
 		$result = mysqli_query($db->link, $query);
 		 
 		while($row = $result->fetch_assoc())
@@ -159,6 +187,47 @@ function productGetProductsByLogs($params)
 
 /** 
  *	
+ * getting a logs
+ * @return list of objects
+ *
+ **/
+function productLogs($params=[])
+{
+	global $db;
+	
+	try {
+		$query = "SELECT *, product_logs.quantity as log_quantity, product_logs.created_at as log_created_at FROM product_logs LEFT JOIN products ON product_logs.product_id=products.product_id";
+
+		if (isset($params['product_id'])) {
+			$query .= " WHERE product_logs.product_id={$params['product_id']}";
+		}
+		
+		if(isset($params['date_from']) && isset($params['date_to'])) {
+			$query .= " WHERE product_logs.created_at BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}') order by product_logs.created_at ASC";
+		}
+
+		$result = mysqli_query($db->link, $query);
+		 
+		   if ($result->num_rows > 0) 
+		   {
+			   $listing = [];
+			   while($row = $result->fetch_assoc())
+			   {
+				   $listing[] = (object) $row;
+			   }
+
+			   return $listing;
+		   }
+
+	} catch (\Exception) {
+		
+	}
+
+	return [];
+}
+
+/** 
+ *	
  * getting a list of products
  * @return list of objects
  *
@@ -168,15 +237,20 @@ function productList($params)
 	global $db;
 	
 	try {
-		$query = "SELECT * FROM `products`";
+		$query = "SELECT * FROM `products` where is_delete is null";
 		
 		if (isset($params['search'])) {
-			$query = "SELECT * FROM `products` where product_name like '%{$params['search']}'";
+			$query = "SELECT * FROM `products` where product_name like '%{$params['search']}' and is_delete is null";
 		}
 
 		if(isset($params['date_from']) && isset($params['date_to'])) {
 			$query =  "SELECT * FROM `products` WHERE created_at";
-			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}')";
+			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}') AND is_delete is null";
+		}
+
+		if (isset($params['sort_by']) && isset($params['sort_direction']))
+		{
+			$query .= " ORDER BY {$params['sort_by']} {$params['sort_direction']}";
 		}
 		
 		$result = mysqli_query($db->link, $query);
@@ -186,7 +260,15 @@ function productList($params)
 			   $listing = [];
 			   while($row = $result->fetch_assoc())
 			   {
-				   $listing[] = (object) $row;
+				   	if (isset($params['product_logs']))
+				   	{
+						$product = (object) $row;
+						$product->logs = productLogs(['product_id' => $product->product_id]);
+						$listing[] = $product;
+						//dd($listing);
+				   	} else {
+						$listing[] = (object) $row;
+				   	}
 			   }
 
 			   return $listing;
@@ -278,11 +360,12 @@ function productDelete($id=null)
 	$result = false;
 
 	try {
-		$query = "DELETE FROM `products` where product_id={$id} limit 1";
-		$result = mysqli_query($db->link, $query);
+		$sql = "UPDATE products SET is_delete=1 WHERE product_id={$id} limit 1";
+
+		mysqli_query($db->link, $sql);
 		
-		$query = "DELETE FROM `product_logs` where product_id={$id}";
-		$result = mysqli_query($db->link, $query);
+		// $query = "DELETE FROM `product_logs` where product_id={$id}";
+		// $result = mysqli_query($db->link, $query);
 		
 	} catch (\Exception) {
 		
@@ -301,4 +384,9 @@ function productGetEmptyForm()
 		'created_at' => null,
 		'updated_at' => null
 	];
+}
+
+function getAnalyticalStockMessage()
+{
+	// $countLogs
 }

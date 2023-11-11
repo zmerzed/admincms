@@ -16,8 +16,11 @@
   $data = [];
   $barGraph = [];
   $barGraph[] = ["" . $year, 'Stock In', 'Stock Out'];
+  $products = productList([]);
+  $graph1ProductId = isset($_GET['graph1_product_id']) ? $_GET['graph1_product_id'] : null;
 
-  foreach (range($month_from, $month_to) as $number) {
+  foreach (range($month_from, $month_to) as $number) 
+  {
 
     $monthNumber = sprintf("%02d", $number);
     $date = "{$year}-{$monthNumber}-01";
@@ -28,20 +31,15 @@
       'date' => $date
     ];
 
-    $listing = productList([
-      'date_from' => date("Y-m-01", strtotime($date)),
-      'date_to' => date("Y-m-t", strtotime($date))
-    ]);
-
-    //  $monthData['listing'] = $listing;
-
     $params = [
       'date_from' => date("Y-m-01", strtotime($date)),
-      'date_to' => date("Y-m-t", strtotime($date))
+      'date_to' => date("Y-m-t", strtotime($date)),
+      'product_id' => $graph1ProductId
     ];
 
     $totalInMonth = productLogTotal($params, 'in');
     $totalOutMonth = productLogTotal($params, 'out');
+
     $monthData['total_in_month'] = (int) $totalInMonth;
     $monthData['total_out_month'] = (int) $totalOutMonth;
 
@@ -99,9 +97,12 @@
             <!-- first graph -->
             <div>
               <form method="GET" action="">
-                <label>Year:</label>
-                <select name="year">
-                  <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
+                <label>Product:</label>
+                <select name="year" id="findProductChart1">
+                  <option value="">select</option>
+                  <?php foreach($products as $product) { ?>
+                    <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_id . "-" . $product->product_name ?></option>
+                  <?php } ?>  
                 </select>
             </div>
             <style>
@@ -149,10 +150,7 @@
             <!-- second graph -->
             <div>
               <label>Month:</label>
-              <select name="month">
-                <option value="<?php echo $month ?>"><?php echo $monthName ?></option>
-              </select>
-              <input type="submit" value="run" />
+              <span><strong><?php echo $monthName ?></strong></span>
               </form>
             </div>
             <style>
@@ -211,91 +209,6 @@
       </div>
 
     </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="card mb-4">
-          <div class="card-header">
-          </div>
-          <div class="card-body">
-            <!-- third graph -->
-            <style>
-              .axeschart {
-                width: 100%;
-                height: 450px;
-              }
-            </style>
-            <div class="axeschart" id='myDiv'></div>
-
-            <script type="text/javascript">
-              d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", function(err, rows) {
-                function unpack(rows, key) {
-                  return rows.map(function(row) {
-                    return row[key];
-                  });
-                }
-                console.log(rows)
-                var x = unpack(rows, 'Date')
-                var y = unpack(rows, 'AAPL.Volume')
-
-                var trace = {
-                  type: "scatter",
-                  mode: "lines",
-                  name: 'AAPL Volume',
-                  x: x,
-                  y: y,
-                  line: {
-                    color: 'green'
-                  },
-                }
-
-                var data = [trace];
-
-                var layout = {
-                  title: 'Stocks Data Overview ',
-                  xaxis: {
-                    title: 'Month and Year',
-                    titlefont: {
-                      family: 'Arial, sans-serif',
-                      size: 18,
-                      color: 'black'
-                    },
-                    showticklabels: true,
-                    tickangle: 'auto',
-                    tickfont: {
-                      family: 'Old Standard TT, serif',
-                      size: 14,
-                      color: 'grey'
-                    },
-                    exponentformat: 'e',
-                    showexponent: 'all'
-                  },
-                  yaxis: {
-                    title: 'Quantity',
-                    titlefont: {
-                      family: 'Arial, sans-serif',
-                      size: 18,
-                      color: 'black'
-                    },
-                    showticklabels: true,
-                    tickangle: 45,
-                    tickfont: {
-                      family: 'Old Standard TT, serif',
-                      size: 14,
-                      color: 'grey'
-                    },
-                    exponentformat: 'e',
-                    showexponent: 'all'
-                  }
-                };
-
-                Plotly.newPlot('myDiv', data, layout);
-              })
-            </script>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   <script>
     window.takeScreenShot = function() {
@@ -314,4 +227,10 @@
         doc.save('product_overview.pdf');
       });
     }
+
+    var select = document.querySelector('#findProductChart1')
+    console.log('select', select)
+    select.addEventListener('change',function(event){
+        window.location.href = "/dashboard?graph1_product_id=" + this.value
+    });
   </script>
