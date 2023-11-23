@@ -14,8 +14,9 @@
   $month_from = 1;
   $month_to = 12;
   $data = [];
-  $barGraph = [];
   $barGraph[] = ["" . $year, 'Stock In', 'Stock Out'];
+  $products = productList([]);
+  $graph1ProductId = isset($_GET['graph1_product_id']) ? $_GET['graph1_product_id'] : null;
 
   foreach (range($month_from, $month_to) as $number) {
 
@@ -37,7 +38,8 @@
 
     $params = [
       'date_from' => date("Y-m-01", strtotime($date)),
-      'date_to' => date("Y-m-t", strtotime($date))
+      'date_to' => date("Y-m-t", strtotime($date)),
+      'product_id' => $graph1ProductId
     ];
 
     $totalInMonth = productLogTotal($params, 'in');
@@ -83,25 +85,23 @@
   ?>
 
   <div class="container">
+
     <div class="row">
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 1
           </div>
           <div class="card-body">
             <!-- first graph -->
             <div>
               <form method="GET" action="">
-                <label>Year:</label>
-                <select name="year">
-                  <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
-                  <option value="2022" <?php echo $year == 2022 ? 'selected' : '' ?>>2022</option>
-                  <option value="2021" <?php echo $year == 2021 ? 'selected' : '' ?>>2021</option>
-                  <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
-                  <option value="2019" <?php echo $year == 2019 ? 'selected' : '' ?>>2019</option>
+                <label>Product:</label>
+                <select name="year" id="findProductChart1">
+                  <option value="">select</option>
+                  <?php foreach($products as $product) { ?>
+                    <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_id . "-" . $product->product_name ?></option>
+                  <?php } ?>  
                 </select>
-                <input type="submit" value="run" />
             </div>
             <style>
               .bargraph {
@@ -122,8 +122,6 @@
                 var data = google.visualization.arrayToDataTable(barGraphData);
                 var options = {
                   chart: {
-                    title: 'Stock In and Out Data',
-                    subtitle: 'Stock In and Out Data: 2023',
                   },
                   bars: 'vertical'
                 };
@@ -223,92 +221,29 @@
       </div>
 
     </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="card mb-4">
-          <div class="card-header">
-            Graph 3
-          </div>
-          <div class="card-body">
-            <!-- third graph -->
-            <style>
-              .axeschart {
-                width: 100%;
-                height: 450px;
-              }
-            </style>
-            <div class="axeschart" id='myDiv'></div>
-
-            <script type="text/javascript">
-              d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", function(err, rows) {
-                function unpack(rows, key) {
-                  return rows.map(function(row) {
-                    return row[key];
-                  });
-                }
-                console.log(rows)
-                var x = unpack(rows, 'Date')
-                var y = unpack(rows, 'AAPL.Volume')
-
-                var trace = {
-                  type: "scatter",
-                  mode: "lines",
-                  name: 'AAPL Volume',
-                  x: x,
-                  y: y,
-                  line: {
-                    color: 'green'
-                  },
-                }
-
-                var data = [trace];
-
-                var layout = {
-                  title: 'Stocks Data Overview ',
-                  xaxis: {
-                    title: 'Month and Year',
-                    titlefont: {
-                      family: 'Arial, sans-serif',
-                      size: 18,
-                      color: 'black'
-                    },
-                    showticklabels: true,
-                    tickangle: 'auto',
-                    tickfont: {
-                      family: 'Old Standard TT, serif',
-                      size: 14,
-                      color: 'grey'
-                    },
-                    exponentformat: 'e',
-                    showexponent: 'all'
-                  },
-                  yaxis: {
-                    title: 'Quantity',
-                    titlefont: {
-                      family: 'Arial, sans-serif',
-                      size: 18,
-                      color: 'black'
-                    },
-                    showticklabels: true,
-                    tickangle: 45,
-                    tickfont: {
-                      family: 'Old Standard TT, serif',
-                      size: 14,
-                      color: 'grey'
-                    },
-                    exponentformat: 'e',
-                    showexponent: 'all'
-                  }
-                };
-
-                Plotly.newPlot('myDiv', data, layout);
-              })
-            </script>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <script>
+    window.takeScreenShot = function() {
+      html2canvas(document.getElementById('dashboard')).then(function(canvas) {
+        var wid
+        var hgt
+        // document.body.appendChild(canvas)
+        var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
+        var hratio = hgt / wid
+        var doc = new jsPDF('p', 'pt', 'a4');
+        var width = doc.internal.pageSize.width;
+        var height = width * hratio
+        console.log('width', width / 2)
+        console.log('height', height / 2)
+        doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
+        doc.save('product_overview.pdf');
+      });
+    }
+
+    var select = document.querySelector('#findProductChart1')
+    console.log('select', select)
+    select.addEventListener('change',function(event){
+        window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + this.value
+    });
+  </script>

@@ -77,6 +77,7 @@ function productUpdateStatus($product, $status)
 
 	return false;
 }
+
 /** 
  *	
  * updating a productLowQuantityLevelUpdate

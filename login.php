@@ -14,6 +14,12 @@
   <?php 
     ob_start();
     session_start();
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/auth.php';
+
+    if (isAuthenticated()) {
+        header('location: ' . '/dashboard');
+    }
   ?>
   <div class="wrapper">
     <span class="bg-animate"></span>
