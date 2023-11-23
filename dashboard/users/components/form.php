@@ -35,7 +35,7 @@
             <h2 class="mt-4 mb-4"><?php echo $formLabel ?></h2>
             <div class="card mb-4">
                 <div class="card-header">
-                    Form
+                    Create User
                 </div>
 
                 <div class="card-body">

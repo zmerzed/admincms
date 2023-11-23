@@ -29,7 +29,7 @@ CREATE TABLE `product_logs` (
   `product_id` int NOT NULL,
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,8 @@ CREATE TABLE `product_logs` (
 
 LOCK TABLES `product_logs` WRITE;
 /*!40000 ALTER TABLE `product_logs` DISABLE KEYS */;
-INSERT INTO `product_logs` VALUES (1,'in',1,1,'2023-10-16'),(2,'in',50,1,'2023-10-16'),(3,'out',10,1,'2023-10-16'),(4,'in',5,5,'2023-10-16'),(5,'out',4,5,'2023-10-16'),(6,'in',5,12,'2023-10-17'),(7,'out',2,12,'2023-10-17'),(8,'in',1,1,'2023-10-17'),(9,'out',1,1,'2023-10-17'),(10,'in',10,1,'2023-10-17'),(12,'out',5,1,'2023-10-17'),(13,'out',20,1,'2023-10-28'),(14,'out',1,16,'2023-11-10'),(15,'in',1,1,'2023-11-10'),(16,'in',20,4,'2023-11-10'),(17,'in',5,3,'2023-11-11'),(18,'in',3,17,'2023-11-11'),(19,'in',1,17,'2023-11-11'),(20,'in',1,17,'2023-11-11'),(21,'out',1,17,'2023-11-11');
+INSERT INTO `product_logs` VALUES (1,'in',1,1,'2023-10-16'),(2,'in',50,1,'2023-10-16'),(3,'out',10,1,'2023-10-16'),(4,'in',5,5,'2023-10-16'),(5,'out',4,5,'2023-10-16'),(6,'in',5,12,'2023-10-17'),(7,'out',2,12,'2023-10-17'),(8,'in',1,1,'2023-10-17'),(9,'out',1,1,'2023-10-17'),(10,'in',10,1,'2023-10-17'),(12,'out',5,1,'2023-10-17'),(13,'out',20,1,'2023-10-28'),(14,'out',1,16,'2023-11-10'),(15,'in',1,1,'2023-11-10'),(16,'in',20,4,'2023-11-10'),(17,'in',5,3,'2023-11-11'),(18,'in',3,17,'2023-11-11'),(19,'in',1,17,'2023-11-11'),(20,'in',1,17,'2023-11-11'),(21,'out',1,17,'2023-11-11'), (29,'out',1,1,'2023-9-17'),
+;
 /*!40000 ALTER TABLE `product_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +61,7 @@ CREATE TABLE `products` (
   `is_delete` smallint DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +91,7 @@ CREATE TABLE `users` (
   `created_at` date DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

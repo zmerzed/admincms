@@ -1,7 +1,7 @@
 <div id="layoutSidenav_content">
   <style>
     .container {
-      padding: 5%;
+      padding: 1%;
     }
   </style>
   <?php
@@ -19,41 +19,8 @@
   $products = productList([]);
   $graph1ProductId = isset($_GET['graph1_product_id']) ? $_GET['graph1_product_id'] : null;
 
-  foreach (range($month_from, $month_to) as $number) 
-  {
-
-    $monthNumber = sprintf("%02d", $number);
-    $date = "{$year}-{$monthNumber}-01";
-
-    $monthData = [
-      'month' => date("F", strtotime($date)),
-      'month_value' => $number,
-      'date' => $date
-    ];
-
-    $params = [
-      'date_from' => date("Y-m-01", strtotime($date)),
-      'date_to' => date("Y-m-t", strtotime($date)),
-      'product_id' => $graph1ProductId
-    ];
-
-    $totalInMonth = productLogTotal($params, 'in');
-    $totalOutMonth = productLogTotal($params, 'out');
-
-    $monthData['total_in_month'] = (int) $totalInMonth;
-    $monthData['total_out_month'] = (int) $totalOutMonth;
-
-    $barGraph[] = [
-      date("F", strtotime($date)),
-      $monthData['total_in_month'],
-      $monthData['total_out_month']
-    ];
-
-    $data[] = $monthData;
-  }
-
   // Deal second graph
-  $linearGraph[] = ['Month', 'In', 'Out'];
+  $linearGraph[] = ['Month', 'Current Quantity'];
   $linearDate = "{$year}-{$month}-01";
   $linearGraphMonthName = "Month of " . date("F", strtotime($linearDate));
   $dateFrom = date("Y-m-01", strtotime($linearDate));
@@ -63,88 +30,27 @@
     'date_to' => $dateTo
   ];
 
-  $monthProducts = productGetProductsByLogs($params);
+  $products = productList([]);
 
-  if (count($monthProducts) > 0) {
-    foreach ($monthProducts as $productLog) {
-      $params['product_id'] = $productLog->product_id;
-      $totalInMonth = productLogTotal($params, 'in');
-      $totalOutMonth = productLogTotal($params, 'out');
-      $product = productFindById($productLog->product_id);
-      if ($product) {
-        $linearGraph[] = [$product->product_name, (int) $totalInMonth, (int) $totalOutMonth];
-      }
+  foreach ($products as $product) {
+
+    if ($product) {
+      $linearGraph[] = [$product->product_name, (int) $product->quantity];
     }
-  } else {
-    $linearGraph[] = [0, 0, 0];
   }
+
+  $listing = productList([
+      'status' => 'Alerted'
+  ]);
+
   ?>
 
-  <div class="container" style="padding-bottom: 0">
-    <div class="row">
-      <div class="col">
-        <button class="btn btn-primary" onclick="takeScreenShot()">Download as pdf</button>
-      </div>
-    </div>
-  </div>
   <div class="container" id="dashboard">
     <div class="row">
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-          </div>
-          <div class="card-body">
-            <!-- first graph -->
-            <div>
-              <form method="GET" action="">
-                <label>Product:</label>
-                <select name="year" id="findProductChart1">
-                  <option value="">select</option>
-                  <?php foreach($products as $product) { ?>
-                    <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_id . "-" . $product->product_name ?></option>
-                  <?php } ?>  
-                </select>
-            </div>
-            <style>
-              .bargraph {
-                margin: 50px;
-                padding: 10px;
-              }
-            </style>
-            <div class="bargraph" id="barchart_material"></div>
-            <script type="text/javascript">
-              google.charts.load('current', {
-                'packages': ['bar']
-              });
-              google.charts.setOnLoadCallback(drawChart);
-
-              function drawChart() {
-                let barGraphData = JSON.stringify(<?php echo json_encode($barGraph); ?>)
-                barGraphData = JSON.parse(barGraphData);
-                var data = google.visualization.arrayToDataTable(barGraphData);
-                var options = {
-                  chart: {
-                    title: 'Stock In and Out Data',
-                    subtitle: 'Stock In and Out Data: 2023',
-                  },
-                  bars: 'vertical'
-                };
-
-                var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-                chart.draw(data, google.charts.Bar.convertOptions(options));
-              }
-            </script>
-            <!-- end of first graph  -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="card mb-4">
-          <div class="card-header">
+          <strong><i>Product Overview</i></strong>
           </div>
           <div class="card-body">
             <!-- second graph -->
@@ -184,7 +90,7 @@
                 var data = google.visualization.arrayToDataTable(linearGraphData);
 
                 var options = {
-                  title: 'Product Overview',
+                  title: '',
                   vAxis: {
                     title: 'Quantity'
                   },
@@ -196,7 +102,8 @@
                     10: {
                       type: 'line'
                     }
-                  }
+                  },
+                  backgroundColor: 'transparent'
                 };
 
                 var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
@@ -209,6 +116,46 @@
       </div>
 
     </div>
+
+    <div class="row">
+      <div class="card mb-4">
+          <div class="card-header">
+              List of Supplies
+          </div>
+          <div class="card-body">
+              <table class="table table-dark table-striped">
+                  <thead>
+                      <tr>
+                          <th scope="col">No.</th>
+                          <th scope="col">Product Name</th>
+                          <th scope="col">Category</th>
+                          <th scope="col">Quantity</th>
+                          <th scope="col">Low Quantity Level</th>
+                          <th scope="col">Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <?php
+                          foreach($listing as $key => $product) {
+                              $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';
+                              echo '<tr>';
+                              echo '<th scope=\"row\">' . ($key + 1) . '</th>';
+                              echo '<td>' . $product->product_name . "</td>";
+                              echo '<td>' . $product->category . '</td>';
+                              echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
+                                  '</div></td>';
+                              echo "<td><div>" . $product->low_quantity_level . 
+                                  '</div></td>';
+                              echo "<td>{$product->status}</td>";
+                              echo '</tr>';
+                          }
+                      ?>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+
   </div>
   <script>
     window.takeScreenShot = function() {

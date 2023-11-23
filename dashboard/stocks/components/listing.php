@@ -27,7 +27,7 @@ z<div id="layoutSidenav_content">
                     List of Supplies
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>

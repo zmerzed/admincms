@@ -10,42 +10,55 @@
                     </a>
                 <?php } ?>
 
-                <a class="nav-link" href="/dashboard/stocks">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage Stocks
-                </a>
-                <nav class="sb-sidenav-menu-nested nav">
-                    <a href="/dashboard/stocks" class="nav-link" href="layout-static.html">View Stock Data</a>
-                    <a href="/dashboard/stocks/updatestock.php" class="nav-link" href="layout-sidenav-light.html">Update Stocks</a>
-                    <a href="/dashboard/stocks/product_logs.php" class="nav-link" href="layout-sidenav-light.html">Product Logs</a>
-                </nav>
+                <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsStocks" aria-expanded="true" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Manage Stocks
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayoutsStocks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a href="/dashboard/stocks" class="nav-link" href="layout-static.html">View Stock Data</a>
+                        <a href="/dashboard/stocks/updatestock.php" class="nav-link" href="layout-sidenav-light.html">Update Stocks</a>
+                        <a href="/dashboard/stocks/product_logs.php" class="nav-link" href="layout-sidenav-light.html">Product Logs</a>
+                    </nav>
+                    </div>
 
                 <?php if (auth()->access_level == 1) { ?>
-                    <a class="nav-link" href="/dashboard/users">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsUsers" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                        Users Management
+                        Manage User
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a href="/dashboard/users" class="nav-link" href="layout-static.html">Users</a>
-                        <a href="/dashboard/users/create.php" class="nav-link" href="layout-sidenav-light.html">Create User</a>
-                    </nav>
+                    <div class="collapse" id="collapseLayoutsUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a href="/dashboard/users" class="nav-link" href="layout-static.html">User Details</a>
+                            <a href="/dashboard/users/create.php" class="nav-link" href="layout-sidenav-light.html">Create User</a>
+                        </nav>
+                    </div>
 
-                    <a class="nav-link" href="/dashboard/history">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsInventory" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
                         Inventory History
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <nav class="sb-sidenav-menu-nested nav">
+                    <div class="collapse" id="collapseLayoutsInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
                         <a href="/dashboard/history" class="nav-link" href="layout-static.html">Tabular History Data</a>
                         <a href="/dashboard/history/graphical.php" class="nav-link" href="layout-static.html">Graphical History Data</a>
-                    </nav>
+                        </nav>
+                    </div>
 
-                    <a class="nav-link" href="/dashboard/reports">
-                        <div class="sb-nav-link-icon"><i class="fas fa-report"></i></div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsInventory" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
                         Reports
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <nav class="sb-sidenav-menu-nested nav">
+                    <div class="collapse" id="collapseLayoutsInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
                         <a href="/dashboard/reports" class="nav-link" href="layout-static.html">Stock Report</a>
-                    </nav>
+                        </nav>
+                    </div>
+
                 <?php } ?>
             </div>
         </div>

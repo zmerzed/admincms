@@ -13,19 +13,16 @@ z<div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <!-- <div class="col">
-                    <form class="d-flex" method="GET" action="stocks">
-                        <input class="form-control me-2" type="text" name="search" value="<?php echo $search; ?>">
-                        <input type="submit" class="btn btn-outline-success" type="button"value="search">
-                    </form>
-                </div> -->
+                <div class="col pt-4">
+                    <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
+                </div>
             </div>
-            <div class="card mb-4">
+            <div class="card mb-4" id="logs">
                 <div class="card-header">
                     Product Logs
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
@@ -54,3 +51,22 @@ z<div id="layoutSidenav_content">
         </div>
     </main>
 </div>
+
+<script>
+    window.takeScreenShot = function() {
+        html2canvas(document.getElementById('logs')).then(function(canvas) {
+            var wid
+            var hgt
+            // document.body.appendChild(canvas)
+            var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
+            var hratio = hgt / wid
+            var doc = new jsPDF('p', 'pt', 'a4');
+            var width = doc.internal.pageSize.width;
+            var height = width * hratio
+            console.log('width', width / 2)
+            console.log('height', height / 2)
+            doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
+            doc.save('logs.pdf');
+        });
+    }
+</script>

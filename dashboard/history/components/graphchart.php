@@ -1,14 +1,14 @@
 <div id="layoutSidenav_content">
   <style>
     .container {
-      padding: 5%;
+      padding: 1%;
     }
   </style>
   <?php
   require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
   $error_messages = [];
-  $year = isset($_GET['year']) ? $_GET['year'] : 2023;
+  $year = date('Y');
   $month = isset($_GET['month']) ? $_GET['month'] : 1;
 
   $month_from = 1;
@@ -90,14 +90,13 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
+            <strong><i>Product Stock In / Out</i></strong>
           </div>
           <div class="card-body">
             <!-- first graph -->
             <div>
-              <form method="GET" action="">
                 <label>Product:</label>
                 <select name="year" id="findProductChart1">
-                  <option value="">select</option>
                   <?php foreach($products as $product) { ?>
                     <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_id . "-" . $product->product_name ?></option>
                   <?php } ?>  
@@ -141,13 +140,13 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            Graph 2
+            <strong><i>Product Overview</i></strong>
           </div>
           <div class="card-body">
             <!-- second graph -->
             <div>
               <label>Month:</label>
-              <select name="month">
+              <select name="month" id="findProductChart2">
                 <option value="01" <?php echo $month == 1 ? 'selected' : '' ?>>January</option>
                 <option value="02" <?php echo $month == 2 ? 'selected' : '' ?>>Feburary</option>
                 <option value="03" <?php echo $month == 3 ? 'selected' : '' ?>>March</option>
@@ -162,8 +161,6 @@
                 <option value="12" <?php echo $month == 12 ? 'selected' : '' ?>>December</option>
 
               </select>
-              <input type="submit" value="run" />
-              </form>
             </div>
             <style>
               .productgraph {
@@ -196,7 +193,7 @@
                 var data = google.visualization.arrayToDataTable(linearGraphData);
 
                 var options = {
-                  title: 'Product Overview',
+                  title: '',
                   vAxis: {
                     title: 'Quantity'
                   },
@@ -219,31 +216,24 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
   <script>
-    window.takeScreenShot = function() {
-      html2canvas(document.getElementById('dashboard')).then(function(canvas) {
-        var wid
-        var hgt
-        // document.body.appendChild(canvas)
-        var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
-        var hratio = hgt / wid
-        var doc = new jsPDF('p', 'pt', 'a4');
-        var width = doc.internal.pageSize.width;
-        var height = width * hratio
-        console.log('width', width / 2)
-        console.log('height', height / 2)
-        doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
-        doc.save('product_overview.pdf');
-      });
-    }
 
-    var select = document.querySelector('#findProductChart1')
-    console.log('select', select)
-    select.addEventListener('change',function(event){
+    $graph1ProductId = "<?php echo $graph1ProductId ?>";
+
+    var select1 = document.querySelector('#findProductChart1')
+    select1.addEventListener('change',function(event){
         window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + this.value
+    });
+
+    var select2 = document.querySelector('#findProductChart2')
+    select2.addEventListener('change',function(event){
+        if ($graph1ProductId) {
+          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + this.value
+        } else {
+          window.location.href = "/dashboard/history/graphical.php?month=" + this.value
+        }
     });
   </script>

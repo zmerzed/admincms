@@ -77,7 +77,6 @@ function productUpdateStatus($product, $status)
 
 	return false;
 }
-
 /** 
  *	
  * updating a productLowQuantityLevelUpdate
@@ -283,10 +282,18 @@ function productList($params)
 			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}') AND is_delete is null";
 		}
 
+
+		if (isset($params['status']))
+		{
+			$query =  "SELECT * FROM `products` WHERE status='{$params['status']}'";
+			$query .= " AND is_delete is null";
+		}
+
 		if (isset($params['sort_by']) && isset($params['sort_direction']))
 		{
 			$query .= " ORDER BY {$params['sort_by']} {$params['sort_direction']}";
 		}
+
 		
 		$result = mysqli_query($db->link, $query);
 		 
@@ -426,7 +433,7 @@ function getSuggestQuantity($product, $month=null, $year=null)
 
 	if ($product->quantity <= $product->low_quantity_level) {
 
-		$suggestedQuantity = $product->low_quantity_level * 1.5;
+		$suggestedQuantity = $product->low_quantity_level * 2.5;
 
 		return ceil($suggestedQuantity);
 	}

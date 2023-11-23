@@ -43,7 +43,7 @@
             } else if ($quantity > $product->quantity)  {
                 $error_messages = ["Error: <strong>Stock Out Quantity: ({$quantity}) cannot be greater than product existing quantity</strong> "];
             } else {
-                //productLogStore($product, $_POST['mode'], $quantity);
+                productLogStore($product, $_POST['mode'], $quantity);
                 $product->quantity = $product->quantity - $quantity;
                 productQuantityUpdate($product);
     
@@ -64,6 +64,13 @@
         if (count($error_messages) <= 0) {
             header('location: /dashboard/stocks/updatestock.php');
         }
+    }
+
+    if (isset($_POST['alert'])) {
+        
+        $product = productFindById($_POST['alertProductId']); 
+        // sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
+        header('location: /dashboard/stocks/updatestock.php');
     }
 
     ?>
@@ -87,7 +94,7 @@
                     <a href="/dashboard/stocks/create.php" type="button" class="btn btn-primary">Create</a>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
@@ -95,8 +102,10 @@
                                 <th scope="col">Category</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Low Quantity Level</th>
+                                
                                 <?php if (auth()->access_level != 1) { ?>
                                     <th scope="col">Action</th>
+                                    <th scope="col">SMS Alert</th>
                                 <?php } ?>
                             </tr>
                         </thead>
@@ -118,6 +127,14 @@
                                     <td>
                                     <button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#stockInModal{$product->product_id}\">Stock In</button>
                                     <button type=\"button\" class=\"btn btn-warning\" data-bs-toggle=\"modal\" data-bs-target=\"#stockOutModal{$product->product_id}\">Stock Out</button>
+                                    </td>";
+                                    echo "
+                                    <td>
+                                        <form method=\"POST\" action=\"updatestock.php\">
+                                            <input type=\"hidden\" name=\"alertProductId\" value=\"{$product->product_id}\"/>
+                                            <input type=\"submit\" name=\"alert\" class=\"btn btn-danger\" value=\"Alert\"> 
+                                        </form>
+                                        
                                     </td>";
                                 }
                                
@@ -147,8 +164,6 @@
                 </div>
                 <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
                     <div class="modal-body">
-                        <!-- Add your Stock In form content here -->
-                        <!-- Form fields for Stock In -->
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>
                             <input type="text" class="form-control" name="product_name" value="<?php echo $product->product_name ?>" disabled />
@@ -187,8 +202,6 @@
                 </div>
                 <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
                     <div class="modal-body">
-                        <!-- Add your Stock In form content here -->
-                        <!-- Form fields for Stock In -->
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>
                             <input type="text" class="form-control" name="product_name" value="<?php echo $product->product_name ?>" disabled/>
@@ -225,8 +238,6 @@
                 </div>
                 <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
                     <div class="modal-body">
-                        <!-- Add your Stock In form content here -->
-                        <!-- Form fields for Stock In -->
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>
                             <input type="text" class="form-control" name="product_name" value="<?php echo $product->product_name ?>" disabled/>
