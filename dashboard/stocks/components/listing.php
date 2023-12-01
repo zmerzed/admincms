@@ -1,4 +1,4 @@
-z<div id="layoutSidenav_content">
+<div id="layoutSidenav_content">
     <?php 
         require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
@@ -9,12 +9,15 @@ z<div id="layoutSidenav_content">
         }
 
         $listing = productList([
-            'search' => $search
+            'search' => $search,
+            'sort_by_quantity' => true
         ]);
     ?>
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
+            <div class="col">
+            </div>
                 <div class="col">
                     <form class="d-flex" method="GET" action="stocks">
                         <input class="form-control me-2" type="text" name="search" value="<?php echo $search; ?>">
@@ -24,7 +27,7 @@ z<div id="layoutSidenav_content">
             </div>
             <div class="card mb-4">
                 <div class="card-header">
-                    List of Supplies
+                <strong><i>List of Supplies</i></strong>
                 </div>
                 <div class="card-body">
                     <table class="table table-dark table-striped">

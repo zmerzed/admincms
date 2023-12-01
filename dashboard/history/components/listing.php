@@ -56,12 +56,12 @@
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
                 <div class="col">
-                    <h2 class="mt-4 mb-4">Inventory History</h2>
+                    
                 </div>
             </div>
             <div class="row justify-content-between mb-4">
                 <form id="productForm" method="GET" action='history'>
-                    <div class="col lg-4">
+                    <div class="col lg-4 me-2">
                         <label class="form-label" for="quantity">Month From:</label>
                         <select class="form-select" name="month_from">
                             <option value="01" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
@@ -78,7 +78,7 @@
                             <option value="12" <?php echo $month_from == 12 ? 'selected' : '' ?>>December</option>
                         </select>
                     </div>
-                    <div class="col lg-4">
+                    <div class="col lg-4 me-2">
                         <label class="form-label" for="quantity">Month To:</label>
                         <select class="form-select" name="month_to">
                             <option value="1" <?php echo $month_to == 1 ? 'selected' : '' ?>>January</option>
@@ -95,7 +95,7 @@
                             <option value="12" <?php echo $month_to == 12 ? 'selected' : '' ?>>December</option>
                         </select>
                     </div>
-                    <div class="col lg-4">
+                    <div class="col lg-4 me-2">
                         <label class="form-label" for="quantity">Year</label>
                         <select class="form-select" name="year">
                             <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
@@ -111,7 +111,7 @@
                             <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
                         </select>
                     </div>
-                    <div class="col pt-4">
+                    <div class="col pt-4 mt-2">
                         <input class="btn btn-primary btn-md" type="submit" value="Search" />
                         <a class="btn btn-secondary btn-md" href="/dashboard/history">Reset</a>
                     </div>
@@ -124,8 +124,9 @@
                 echo displayErrors($error_messages);
             } ?>
             <div class="row">
+                <?php $countDataAvailable = 0; ?>
                 <?php if (count($error_messages) <= 0) { ?>
-                    <?php foreach($data as $month) { ?>
+                    <?php foreach($data as $key => $month) { ?>
                         <div class="col">
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -135,7 +136,8 @@
                                     <?php if (count($month['logs']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
-                                        <table class="table table-striped">
+                                        <?php $countDataAvailable++; ?>
+                                        <table id="paginatedTable<?php echo $key; ?>" class="table table-dark table-striped">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Product Name</th>
@@ -143,7 +145,7 @@
                                                     <th scope="col">Quantity</th>
                                                     <th scope="col">Mode</th>
                                                     <th scope="col">Mode Quantity</th>
-                                                    <th scope="col">Log at</th>
+                                                    <th scope="col">Date Logs</th>
 
                                                 </tr>
                                             </thead>
@@ -172,3 +174,25 @@
         </div>
     </main>
 </div>
+
+<script>
+
+    var countDataAvailable = parseInt('<?php echo $countDataAvailable ?>');
+    
+    console.log('test2', countDataAvailable)
+    $(document).ready(function() {
+
+        for (let i=0; i<=countDataAvailable; i++) {
+            var table = $('#paginatedTable' + i).DataTable( {
+                lengthChange: false,
+                // buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+            } );
+        }
+    });
+</script>
+
+<style>
+    .card {
+        min-height: 866px;
+    }
+</style>

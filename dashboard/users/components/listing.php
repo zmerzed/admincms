@@ -7,17 +7,13 @@
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <div class="col">
-                    <h2 class="mt-4 mb-4">Users</h2>
-                </div>
             </div>
-
-            <div class="card mb-4">
+             <div class="card mb-4">
                 <div class="card-header">
-                    List
+                    <strong><i>List of Users</i></strong>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-dark table-striped">
                         <thead>`
                             <tr>
                                 <th scope="col">ID</th>

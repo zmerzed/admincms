@@ -262,6 +262,62 @@ function productLogs($params=[])
 
 /** 
  *	
+ * count stock quantity
+ * @return count
+ *
+ **/
+function productCountStockInQuantity($productId)
+{
+	global $db;
+	
+	try {
+		$query = "SELECT count(*)FROM `product_logs` where product_id={$productId} and mode='IN'";
+
+		$result = mysqli_query($db->link, $query);
+		$count = 0;
+		while($row = mysqli_fetch_array($result)) {
+			$count = $row['count(*)'];
+		}
+
+		return $count;
+
+	} catch (\Exception) {
+		
+	}
+
+	return 0;
+}
+
+/** 
+ *	
+ * count stock quantity
+ * @return count
+ *
+ **/
+function productCountStockOutQuantity($productId)
+{
+	global $db;
+	
+	try {
+		$query = "SELECT count(*)FROM `product_logs` where product_id={$productId} and mode='OUT'";
+
+		$result = mysqli_query($db->link, $query);
+		$count = 0;
+		while($row = mysqli_fetch_array($result)) {
+			$count = $row['count(*)'];
+		}
+
+		return $count;
+
+	} catch (\Exception) {
+		
+	}
+
+	return 0;
+}
+
+/** 
+ *	
  * getting a list of products
  * @return list of objects
  *
@@ -282,7 +338,6 @@ function productList($params)
 			$query .= " BETWEEN '{$params['date_from']}' AND LAST_DAY('{$params['date_to']}') AND is_delete is null";
 		}
 
-
 		if (isset($params['status']))
 		{
 			$query =  "SELECT * FROM `products` WHERE status='{$params['status']}'";
@@ -294,7 +349,16 @@ function productList($params)
 			$query .= " ORDER BY {$params['sort_by']} {$params['sort_direction']}";
 		}
 
+		if (isset($params['sort_by_alphabetically'])) {
+			
+			$query .= " ORDER BY product_name ASC";
+		}
 		
+		if (isset($params['sort_by_quantity'])) {
+			
+			$query .= " ORDER BY quantity ASC";
+		}
+
 		$result = mysqli_query($db->link, $query);
 		 
 		   if ($result->num_rows > 0) 
@@ -306,6 +370,8 @@ function productList($params)
 				   	{
 						$product = (object) $row;
 						$product->logs = productLogs(['product_id' => $product->product_id]);
+						$product->stock_in_quantity = productCountStockInQuantity($product->product_id);
+						$product->stock_out_quantity = productCountStockOutQuantity($product->product_id);
 						$listing[] = $product;
 						//dd($listing);
 				   	} else {

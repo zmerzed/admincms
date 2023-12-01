@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2023 at 01:15 PM
+-- Generation Time: Nov 29, 2023 at 05:53 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -44,16 +44,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `quantity`, `low_quantity_level`, `category`, `created_at`, `updated_at`, `is_delete`, `status`) VALUES
-(20, 'coke', 110, 30, 'kitchen', '2023-01-10', '2023-02-12', NULL, 'Stocked'),
+(20, 'coke', 160, 30, 'kitchen', '2023-01-10', '2023-03-08', NULL, 'Stocked'),
 (21, 'potato', 72, 25, 'kitchen', '2023-01-10', '2023-02-12', NULL, 'Stocked'),
-(22, 'shrimp', 220, 50, 'kitchen', '2023-01-10', '2023-02-12', NULL, 'Stocked'),
-(23, 'Nestea', 161, 60, 'kitchen', '2023-01-10', '2023-11-29', NULL, 'Stocked'),
-(24, 'UFC ketchup', 50, 30, 'kitchen', '2023-01-10', '2023-02-06', NULL, 'Stocked'),
-(25, 'Magnolia Hotdog', 59, 20, 'kitchen', '2023-01-10', '2023-02-12', NULL, 'Stocked'),
-(26, 'French Fries', 160, 60, 'kitchen', '2023-01-10', '2023-11-29', NULL, 'Stocked'),
-(27, 'Calamares', 156, 40, 'kitchen', '2023-01-10', '2023-02-12', NULL, 'Stocked'),
-(28, 'Fish Fillet', 75, 50, 'kitchen', '2023-01-10', '2023-01-10', NULL, NULL),
-(29, 'Lumpia', 159, 40, 'kitchen', '2023-01-10', '2023-02-06', NULL, 'Stocked');
+(22, 'shrimp', 90, 50, 'kitchen', '2023-01-10', '2023-03-14', NULL, 'Stocked'),
+(23, 'Nestea', 171, 60, 'kitchen', '2023-01-10', '2023-04-02', NULL, 'Stocked'),
+(24, 'UFC ketchup', 90, 30, 'kitchen', '2023-01-10', '2023-04-02', NULL, 'Stocked'),
+(25, 'Magnolia Hotdog', 149, 20, 'kitchen', '2023-01-10', '2023-03-22', NULL, 'Stocked'),
+(26, 'French Fries', 160, 60, 'kitchen', '2023-01-10', '2023-04-02', NULL, 'Stocked'),
+(27, 'Calamares', 126, 40, 'kitchen', '2023-01-10', '2023-04-02', NULL, 'Stocked'),
+(28, 'Fish Fillet', 25, 50, 'kitchen', '2023-01-10', '2023-04-02', NULL, 'Alerted'),
+(29, 'Lumpia', 69, 40, 'kitchen', '2023-01-10', '2023-03-14', NULL, 'Stocked');
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,31 @@ INSERT INTO `product_logs` (`id`, `mode`, `quantity`, `product_id`, `created_at`
 (80, 'out', 13, 21, '2023-02-12'),
 (81, 'out', 24, 27, '2023-02-12'),
 (82, 'in', 120, 23, '2023-02-24'),
-(83, 'in', 100, 26, '2023-02-24');
+(83, 'in', 100, 26, '2023-02-24'),
+(84, 'out', 60, 22, '2023-03-08'),
+(85, 'out', 50, 28, '2023-03-08'),
+(86, 'in', 50, 20, '2023-03-08'),
+(87, 'out', 30, 25, '2023-03-08'),
+(88, 'in', 40, 24, '2023-03-08'),
+(89, 'in', 120, 24, '2023-03-08'),
+(90, 'out', 80, 27, '2023-03-08'),
+(91, 'out', 90, 29, '2023-03-14'),
+(92, 'out', 70, 22, '2023-03-14'),
+(93, 'out', 120, 23, '2023-03-14'),
+(94, 'in', 150, 24, '2023-03-14'),
+(95, 'in', 120, 26, '2023-03-14'),
+(96, 'out', 150, 26, '2023-03-14'),
+(97, 'in', 200, 28, '2023-03-22'),
+(98, 'in', 150, 23, '2023-03-22'),
+(99, 'in', 120, 25, '2023-03-22'),
+(100, 'out', 150, 24, '2023-03-22'),
+(101, 'out', 90, 26, '2023-03-25'),
+(102, 'in', 150, 26, '2023-04-02'),
+(103, 'out', 30, 26, '2023-04-02'),
+(104, 'out', 20, 23, '2023-04-02'),
+(105, 'out', 120, 24, '2023-04-02'),
+(106, 'out', 200, 28, '2023-04-02'),
+(107, 'in', 50, 27, '2023-04-02');
 
 -- --------------------------------------------------------
 
@@ -179,7 +203,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_logs`
 --
 ALTER TABLE `product_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `users`

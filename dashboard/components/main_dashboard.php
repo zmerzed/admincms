@@ -7,6 +7,8 @@
   <?php
   require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
+  $currentMonth = date('m');
+  $currentYear = date("Y");
   $error_messages = [];
   $year = isset($_GET['year']) ? $_GET['year'] : 2023;
   $month = isset($_GET['month']) ? $_GET['month'] : date('m');
@@ -30,7 +32,7 @@
     'date_to' => $dateTo
   ];
 
-  $products = productList([]);
+  $products = productList(['sort_by_alphabetically' => true]);
 
   foreach ($products as $product) {
 
@@ -40,9 +42,10 @@
   }
 
   $listing = productList([
-      'status' => 'Alerted'
+      'status' => 'Alerted',
+      'sort_by_quantity' => true
   ]);
-
+  
   ?>
 
   <div class="container" id="dashboard">
@@ -50,10 +53,10 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-          <strong><i>Product Overview</i></strong>
+          <strong><i>Stocks</i></strong>
           </div>
           <div class="card-body">
-            <!-- second graph -->
+            <!-- First graph -->
             <div>
               <label>Month:</label>
               <span><strong><?php echo $monthName ?></strong></span>
@@ -103,14 +106,15 @@
                       type: 'line'
                     }
                   },
-                  backgroundColor: 'transparent'
+                  backgroundColor: 'transparent',
+                  colors: ['#57de9c']
                 };
 
                 var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
                 chart.draw(data, options);
               }
             </script>
-            <!-- end of second graph -->
+            <!-- end of first graph -->
           </div>
         </div>
       </div>
@@ -120,7 +124,7 @@
     <div class="row">
       <div class="card mb-4">
           <div class="card-header">
-              List of Supplies
+          <strong><i>Low Level Alerted Stocks</i></strong>
           </div>
           <div class="card-body">
               <table class="table table-dark table-striped">
@@ -132,6 +136,7 @@
                           <th scope="col">Quantity</th>
                           <th scope="col">Low Quantity Level</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Suggested Quantity</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -147,6 +152,7 @@
                               echo "<td><div>" . $product->low_quantity_level . 
                                   '</div></td>';
                               echo "<td>{$product->status}</td>";
+                              echo '<td>' . getSuggestQuantity($product, $currentMonth, $currentYear - 1) . '</td>';
                               echo '</tr>';
                           }
                       ?>

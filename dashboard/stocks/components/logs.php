@@ -1,4 +1,4 @@
-z<div id="layoutSidenav_content">
+<div id="layoutSidenav_content">
     <?php 
         require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
@@ -19,17 +19,17 @@ z<div id="layoutSidenav_content">
             </div>
             <div class="card mb-4" id="logs">
                 <div class="card-header">
-                    Product Logs
+                  <strong><i>Product Logs</i></strong>
                 </div>
                 <div class="card-body">
-                    <table class="table table-dark table-striped">
+                    <table id="paginatedTable" class="table table-dark table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Mode</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Date</th>
+                                <th scope="col">Date Logs</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,4 +69,14 @@ z<div id="layoutSidenav_content">
             doc.save('logs.pdf');
         });
     }
+
+    $(document).ready(function() {
+        var table = $('#paginatedTable').DataTable( {
+            lengthChange: false,
+            // buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+        } );
+    
+        table.buttons().container()
+            .appendTo( '#example_wrapper .col-md-6:eq(0)' );
+    });
 </script>

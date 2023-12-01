@@ -77,7 +77,9 @@
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <div class="col col-md-4">
+            <div class="col">
+            </div>
+                <div class="col">
                     <form class="d-flex" method="GET" action="updatestock.php">
                         <input class="form-control me-2" type="text" name="search" value="<?php echo $search; ?>">
                         <input type="submit" class="btn btn-outline-success" type="button" value="search">
@@ -90,7 +92,7 @@
             } ?>
             <div class="card mb-4">
                 <div class="card-header">
-                    Update Stocks
+                    <strong><i>Update Stocks</i></strong>
                     <a href="/dashboard/stocks/create.php" type="button" class="btn btn-primary">Create</a>
                 </div>
                 <div class="card-body">
@@ -114,14 +116,14 @@
                             foreach ($listing as $no => $product) {
                                 $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';
                                 echo '<tr>';
-                                echo '<th scope="row">' . $no + 1 . "-id:{$product->product_id}" . '</th>';
+                                echo '<th scope="row">' . $no + 1 . '</th>';
                                 echo '<td>' . $product->product_name . '</td>';
                                 echo '<td>' . $product->category . '</td>';
                                 echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . '</div></td>';
                                 echo "<td><div>" . 
                                     $product->low_quantity_level . 
-                                    "<button type=\"button\" class=\"btn btn-link btn-xs\" data-bs-toggle=\"modal\" data-bs-target=\"#lowLevelModal{$product->product_id}\">Edit</button>" .
-                                    '</div></td>';
+                                    (auth()->access_level == 1 ? "<button type=\"button\" class=\"btn btn-link btn-xs\" data-bs-toggle=\"modal\" data-bs-target=\"#lowLevelModal{$product->product_id}\">Edit</button>" .
+                                    '</div></td>' : "");
                                 if (auth()->access_level != 1) {
                                     echo "
                                     <td>
@@ -233,7 +235,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Stock Out Product</h5>
+                    <h5 class="modal-title">Low Quantity Level</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">

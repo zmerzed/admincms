@@ -1963,6 +1963,9 @@ progress {
 }
 .form-label {
   margin-bottom: 0.5rem;
+  color: var(--bs-white);
+  
+
 }
 
 .col-form-label {

@@ -2,6 +2,10 @@
     form {
         display: flex;
     }
+    .action {
+        margin-top: 33px;
+        margin-left: 1.0em;
+    }
 </style>
 <div id="layoutSidenav_content">
     <?php
@@ -32,6 +36,7 @@
                 'month_value' => $number,
                 'date' => $date
             ];
+
             $listing = productList([
                 'date_from' => date("Y-m-01", strtotime($date)),
                 'date_to' => date("Y-m-t", strtotime($date)),
@@ -51,12 +56,12 @@
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
                 <div class="col">
-                    <h2 class="mt-4 mb-4">Reports</h2>
+                    
                 </div>
             </div>
             <div class="row justify-content-between mb-4">
                 <form id="productForm" method="GET" action='reports'>
-                    <div class="col lg-6">
+                    <div class="col lg-6 me-2">
                         <label class="form-label" for="quantity">Month</label>
                         <select class="form-select" name="month_from">
                             <option value="01" <?php echo $month_from == 1 ? 'selected' : '' ?>>January</option>
@@ -89,13 +94,13 @@
                             <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
                         </select>
                     </div>
-                    <div class="col pt-4">
-                        <input class="btn btn-primary btn-md" type="submit" value="Search" />
+                    <div class="col action">
+                        <input class="btn btn-primary btn-md me-2" type="submit" value="Search"/>
                         <a class="btn btn-secondary btn-md" href="/dashboard/reports">Reset</a>
                     </div>
                 </form>
                 <div class="col pt-4">
-
+                    
                     <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
                 </div>
             </div>
@@ -116,55 +121,31 @@
                                     <?php if (count($month['listing']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
-                                        <table class="table table-striped">
+                                        <table class="table table-dark table-striped">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">ID</th>
                                                     <th scope="col">Product Name</th>
-                                                    <th scope="col">Category</th>
-                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Stock In Quantity</th>
+                                                    <th scope="col">Stock Out Quantity</th>
                                                     <th scope="col">Low Quantity Level</th>
-                                                    <th scope="col">Action</th>
-                                                    <th scope="col">Suggested Quantity</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($month['listing'] as $product) { ?>
+                                                <?php foreach ($month['listing'] as $key => $product) { ?>
                                                     <?php $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';?>
                                                     <?php echo '<tr>'; ?>
-                                                    <?php echo '<th scope=\"row\">' . $product->product_id . '</th>'; ?>
+                                                    <?php echo '<th scope=\"row\">' . ($key + 1) . '</th>'; ?>
                                                     <?php echo '<td>' . $product->product_name . "</td>"; ?>
-                                                    <?php echo '<td>' . $product->category . '</td>'; ?>
-                                                    <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
+                                                    <?php echo "<td><div>" . $product->stock_in_quantity . 
+                                        '</div></td>'; ?>
+                                        <?php echo "<td><div>" . $product->stock_out_quantity . 
                                         '</div></td>'; ?>
                                                     <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->low_quantity_level . 
                                         '</div></td>'; ?>
-                                                    <?php echo "<td><button class=\"btn btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#logModal{$product->product_id}\">view logs</button></td>"; ?>
-                                                    <?php echo '<td>' . getSuggestQuantity($product, $currentMonth, $year - 1) . '</td>'; ?>
                                                     <?php echo '</tr>'; ?>
                                                     <!-- Modal for view logs -->
-                                                    <div class="modal fade" id="logModal<?php echo $product->product_id; ?>" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">Logs</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <?php if (count($product->logs) > 0) { ?>
-                                                                    <ul class="list-group">
-                                                                        <?php foreach ($product->logs as $log) { ?>
-                                                                            <li><?php echo $log->mode ?> - Quantity: <?php echo $log->log_quantity ?></li>
-                                                                        <?php } ?>    
-                                                                    </ul>
-                                                                    <?php } else { ?>
-                                                                        <p>No logs available</p>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <?php } ?>
+                                                <?php } // end foreach ?>
                                             </tbody>
                                         </table>
                                     <?php } ?>

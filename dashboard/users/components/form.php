@@ -37,7 +37,6 @@
                 <div class="card-header">
                     Create User
                 </div>
-
                 <div class="card-body">
                     <form id="productForm" method="POST" action="<?php echo $formMode == 'create' ? 'create.php' : 'edit.php?id=' . $id ?>">
                                         <!-- display if any errors -->
