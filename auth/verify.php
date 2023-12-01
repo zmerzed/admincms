@@ -9,6 +9,7 @@ $isLogin = login($username, $password);
 
 if ($isLogin) {
   $page = auth()->access_level == 1 ? '/dashboard/' : '/dashboard/stocks';
+  unset($_SESSION['login_error']);
   header('location: ' . $page);
 } else {
   $_SESSION['login_error'] = 'Invalid username or password';
