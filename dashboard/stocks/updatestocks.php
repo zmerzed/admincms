@@ -69,6 +69,8 @@
     if (isset($_POST['alert'])) {
         
         $product = productFindById($_POST['alertProductId']); 
+        $adminUser = getAdminUser();
+        $suggestedQuantity = getSuggestQuantity($product);
         // sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
         header('location: /dashboard/stocks/updatestock.php');
     }
@@ -93,7 +95,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <strong><i>Update Stocks</i></strong>
-                    <a href="/dashboard/stocks/create.php" type="button" class="btn btn-primary">Create</a>
+                    <a style="float:right" href="/dashboard/stocks/create.php" type="button" class="btn btn-primary">Create</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-dark table-striped">
@@ -102,6 +104,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Unit of Measurement</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Low Quantity Level</th>
                                 
@@ -119,10 +122,11 @@
                                 echo '<th scope="row">' . $no + 1 . '</th>';
                                 echo '<td>' . $product->product_name . '</td>';
                                 echo '<td>' . $product->category . '</td>';
+                                echo '<td>' . $product->uom . '</td>';
                                 echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . '</div></td>';
                                 echo "<td><div>" . 
                                     $product->low_quantity_level . 
-                                    (auth()->access_level == 1 ? "<button type=\"button\" class=\"btn btn-link btn-xs\" data-bs-toggle=\"modal\" data-bs-target=\"#lowLevelModal{$product->product_id}\">Edit</button>" .
+                                    (auth()->access_level == 1 ? "<button type=\"button\" class=\"btn btn-warning btn-xs ms-2\" data-bs-toggle=\"modal\" data-bs-target=\"#lowLevelModal{$product->product_id}\">Edit</button>" .
                                     '</div></td>' : "");
                                 if (auth()->access_level != 1) {
                                     echo "

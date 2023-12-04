@@ -17,7 +17,8 @@
     <!--Graphical Chart Libraries--->
     <script src='https://cdn.plot.ly/plotly-2.26.0.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
-    <script src="/js/jspdf.js"></script>
+    <!-- <script src="/js/jspdf.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
     <script src="/js/html2canvas.min.js"></script>
     
     <!-- data tables -->

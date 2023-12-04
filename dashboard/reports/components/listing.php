@@ -117,7 +117,7 @@
                                 <div class="card-header">
                                     <?php echo $month['month']; ?>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" id="reportsTable">
                                     <?php if (count($month['listing']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
@@ -129,6 +129,7 @@
                                                     <th scope="col">Stock In Quantity</th>
                                                     <th scope="col">Stock Out Quantity</th>
                                                     <th scope="col">Low Quantity Level</th>
+                                                    <th scope="col">Unit of Measurement</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -142,6 +143,8 @@
                                         <?php echo "<td><div>" . $product->stock_out_quantity . 
                                         '</div></td>'; ?>
                                                     <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->low_quantity_level . 
+                                        '</div></td>'; ?>
+                                        <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->uom . 
                                         '</div></td>'; ?>
                                                     <?php echo '</tr>'; ?>
                                                     <!-- Modal for view logs -->
@@ -160,19 +163,52 @@
 </div>
 <script>
     window.takeScreenShot = function() {
-        html2canvas(document.getElementById('reports')).then(function(canvas) {
-            var wid
-            var hgt
-            // document.body.appendChild(canvas)
-            var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
-            var hratio = hgt / wid
-            var doc = new jsPDF('p', 'pt', 'a4');
-            var width = doc.internal.pageSize.width;
-            var height = width * hratio
-            console.log('width', width / 2)
-            console.log('height', height / 2)
-            doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
-            doc.save('reports.pdf');
-        });
+        
+        var pdf = new jsPDF('l', 'pt');
+        // source can be HTML-formatted string, or a reference
+        // to an actual DOM element from which the text will be scraped.
+        let msource = $('#reportsTable').html();
+
+        let source = "<div style='font-size:11px; border:1px solid; background-color: rgb(239 240 240); padding: 05px 15px; width:300px;'>"+ msource +"</div>";
+
+        console.log(source)
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 10,
+            width: 800
+        };
+        // all coords and widths are in jsPDF instance's declared units
+        // 'inches' in this case
+        pdf.fromHTML(
+            source, // HTML string or DOM elem ref.
+
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, // max width of content on PDF
+            },
+
+            function (dispose) {
+                // dispose: object with X, Y of the last line add to the PDF 
+                //          this allow the insertion of new lines after html
+                pdf.save('reports.pdf');
+            }, 
+        margins);
+
+        //html2canvas(document.getElementById('reports')).then(function(canvas) {
+            // var wid
+            // var hgt
+            // // document.body.appendChild(canvas)
+            // var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
+            // var hratio = hgt / wid
+            // var doc = new jsPDF('p', 'pt', 'a4');
+            // var width = doc.internal.pageSize.width;
+            // var height = width * hratio
+            // console.log('width', width / 2)
+            // console.log('height', height / 2)
+            // doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
+            // doc.save('reports.pdf');
+           
+        //});
     }
 </script>

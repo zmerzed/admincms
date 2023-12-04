@@ -142,6 +142,7 @@
                                                 <tr>
                                                     <th scope="col">Product Name</th>
                                                     <th scope="col">Category</th>
+                                                    <th scope="col">Unit of Measurement</th>
                                                     <th scope="col">Quantity</th>
                                                     <th scope="col">Mode</th>
                                                     <th scope="col">Mode Quantity</th>
@@ -155,6 +156,7 @@
                                                         echo '<tr>';
                                                         echo '<td>' . $product->product_name . "</td>";
                                                         echo '<td>' . $product->category . '</td>';
+                                                        echo '<td>' . $product->uom . '</td>';
                                                         echo '<td>' . $product->quantity . '</td>';
                                                         echo '<td>' . $product->mode . '</td>';
                                                         echo '<td>' . $product->log_quantity . '</td>';

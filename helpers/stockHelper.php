@@ -11,8 +11,8 @@ function productStore($product)
 	global $db;
 	
 	try {
-		$sql = "INSERT INTO products (product_name, quantity, category, created_at, updated_at) 
-				VALUES ('{$product->product_name}', {$product->quantity}, '{$product->category}', now(), now())";
+		$sql = "INSERT INTO products (product_name, quantity, category, uom, low_quantity_level, created_at, updated_at) 
+				VALUES ('{$product->product_name}', {$product->quantity}, '{$product->category}', '{$product->uom}', 0, now(), now())";
 		mysqli_query($db->link, $sql);
 		$db->link->close();
 
@@ -488,6 +488,7 @@ function productGetEmptyForm()
 	return (object) [
 		'product_name' => null,
 		'category' => null,
+		'uom' => null,
 		'quantity' => null,
 		'created_at' => null,
 		'updated_at' => null

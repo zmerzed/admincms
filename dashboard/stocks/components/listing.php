@@ -36,6 +36,7 @@
                                 <th scope="col">No.</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Unit of Measurement</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Low Quantity Level</th>
                                 <th scope="col">Status</th>
@@ -50,6 +51,7 @@
                                     echo '<th scope=\"row\">' . ($key + 1) . '</th>';
                                     echo '<td>' . $product->product_name . "</td>";
                                     echo '<td>' . $product->category . '</td>';
+                                    echo '<td>' . $product->uom . '</td>';
                                     echo "<td><div class=\"{$lowStockClass}\">" . $product->quantity . 
                                         '</div></td>';
                                     echo "<td><div>" . $product->low_quantity_level . 

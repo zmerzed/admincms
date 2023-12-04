@@ -7,10 +7,11 @@
         $formSubmitLabel = $formMode == 'update' ? 'Update' : 'Save';
         $product = $id ? productFindById($id) : productGetEmptyForm();
         if (isset($_POST['submit'])) {
+
             $product->product_name = $_POST['product_name'];
             $product->quantity = $_POST['quantity'];
             $product->category = $_POST['category'];
-            
+            $product->uom = $_POST['uom'];
             if (productStore($product)) {
                 header('location: ' . '/dashboard/stocks');
             }
@@ -45,6 +46,16 @@
                             </select>
                         </div>
                         
+                        <!-- UOM input -->
+                        <div class="mb-3">
+                            <label class="form-label" for="uom">Unit of Measurement</label>
+                            <select class="form-select" name="uom" required>
+                                <option value="pack" <?php echo ($product->uom == 'pack') ? 'selected' : '' ?>>Pack</option>
+                                <option value="pieces" <?php echo ($product->uom == 'pieces') ? 'selected' : '' ?>>Pieces</option>
+                                <option value="kilo" <?php echo ($product->uom == 'kilo') ? 'selected' : '' ?>>Kilo</option>
+                            </select>
+                        </div>
+
                          <!-- Quantity input -->
                          <div class="mb-3">
                             <label class="form-label" for="quantity">Quantity</label>

@@ -60,6 +60,7 @@ CREATE TABLE `products` (
   `updated_at` date DEFAULT NULL,
   `is_delete` smallint DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
+  `uom` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -70,7 +71,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Coca Cola Bundle',60,10,'drinks','2023-09-15','2023-11-10',NULL,NULL),(2,'Potato',11,5,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(3,'Table Plate',8,15,'kitchen','2023-09-15','2023-11-11',NULL,NULL),(4,'Shrimp package',24,10,'kitchen','2023-09-15','2023-11-10',NULL,NULL),(5,'Nestea Drink',101,40,'drinks','2023-09-15','2023-11-10',NULL,NULL),(8,'UFC Ketchup',33,10,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(9,'Japanese Knife',33,5,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(10,'Magnolia Hotdog',22,11,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(11,'1 Dozen Egg',22,13,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(12,'Tempura Pack',25,20,'kitchen','2023-09-15','2023-10-17',NULL,NULL),(16,'Purefoods French Fries',10,10,'kitchen','2023-01-18','2023-11-10',NULL,NULL),(17,'Magnolia Chicken Nuggets',5,10,'kitchen','2023-10-01','2023-11-11',NULL,NULL);
+INSERT INTO `products` VALUES (1,'Coca Cola Bundle',60,10,'drinks','2023-09-15','2023-11-10',NULL,NULL),(2,'Potato',11,5,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(3,'Table Plate',8,15,'kitchen','2023-09-15','2023-11-11',NULL,NULL),(4,'Shrimp package',24,10,'kitchen','2023-09-15','2023-11-10',NULL,NULL),(5,'Nestea Drink',101,40,'drinks','2023-09-15','2023-11-10',NULL,NULL),(8,'UFC Ketchup',33,10,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(9,'Japanese Knife',33,5,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(10,'Magnolia Hotdog',22,11,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(11,'1 Dozen Egg',22,13,'kitchen','2023-09-15','2023-09-15',NULL,NULL),(12,'Tempura Pack',25,20,'kitchen','2023-09-15','2023-10-17',NULL,NULL),(16,'Purefoods French Fries',10,10,'kitchen','2023-01-18','2023-11-10',NULL,NULL),(17,'Magnolia Chicken Nuggets',5,10,'kitchen','2023-10-01','2023-11-11',NULL,NULL,\);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 

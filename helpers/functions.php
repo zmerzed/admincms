@@ -47,8 +47,8 @@ function sendSMS($toNumber=null, $message=null)
 {
 	$mainSID = 'AC442c3f897147a382c1f606a9fdef3119';
 	$id = $mainSID;
-	$secret = '8ca934f16a68981a5700ff2020826db0';
-	$url = "https://api.twilio.com/2010-04-01/Accounts/AC442c3f897147a382c1f606a9fdef3119/Messages.json";
+	$secret = '4615bfbdc47c773b59b51e5de29d3cdb';
+	$url = "https://api.twilio.com/2010-04-01/Accounts/{$mainSID}/Messages.json";
 	
 	if ($message) 
 	{
@@ -69,7 +69,7 @@ function sendSMS($toNumber=null, $message=null)
 		curl_setopt($x, CURLOPT_USERPWD, "$id:$secret");
 		curl_setopt($x, CURLOPT_POSTFIELDS, $post);
 		$y = curl_exec($x);
-		//print_r($y);
+		// print_r($y);
 		curl_close($x);
 	}
 }

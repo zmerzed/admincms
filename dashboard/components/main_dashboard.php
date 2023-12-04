@@ -12,7 +12,7 @@
   $error_messages = [];
   $year = isset($_GET['year']) ? $_GET['year'] : 2023;
   $month = isset($_GET['month']) ? $_GET['month'] : date('m');
-  $monthName = date('M');
+  $monthName = date('F');
   $month_from = 1;
   $month_to = 12;
   $data = [];
@@ -24,7 +24,8 @@
   // Deal second graph
   $linearGraph[] = ['Month', 'Current Quantity'];
   $linearDate = "{$year}-{$month}-01";
-  $linearGraphMonthName = "Month of " . date("F", strtotime($linearDate));
+  //$linearGraphMonthName = "Month of " . date("F", strtotime($linearDate));
+  $linearGraphMonthName = "";
   $dateFrom = date("Y-m-01", strtotime($linearDate));
   $dateTo = date("Y-m-t", strtotime($linearDate));
   $params = [
@@ -106,6 +107,7 @@
                       type: 'line'
                     }
                   },
+                  legend: 'none',
                   backgroundColor: 'transparent',
                   colors: ['#57de9c']
                 };
