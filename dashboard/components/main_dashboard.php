@@ -38,7 +38,9 @@
   foreach ($products as $product) {
 
     if ($product) {
-      $linearGraph[] = [$product->product_name, (int) $product->quantity];
+      $linearGraph[] = [
+        $product->product_name . " " . "($product->uom}", (int) $product->quantity
+      ];
     }
   }
 
