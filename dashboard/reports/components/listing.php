@@ -142,7 +142,7 @@
                                         '</div></td>'; ?>
                                         <?php echo "<td><div>" . $product->stock_out_quantity . 
                                         '</div></td>'; ?>
-                                                    <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->low_quantity_level . 
+                                                    <?php echo "<td><div>" . $product->low_quantity_level . 
                                         '</div></td>'; ?>
                                         <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->uom . 
                                         '</div></td>'; ?>

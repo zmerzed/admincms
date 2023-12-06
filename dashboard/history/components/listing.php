@@ -2,6 +2,7 @@
     form {
         display: flex;
     }
+    
 </style>
 <div id="layoutSidenav_content">
     <?php
@@ -132,22 +133,21 @@
                                 <div class="card-header">
                                     <?php echo $month['month']; ?>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="overflow: scroll;">
                                     <?php if (count($month['logs']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
                                         <?php $countDataAvailable++; ?>
-                                        <table id="paginatedTable<?php echo $key; ?>" class="table table-dark table-striped">
+                                        <table id="paginatedTable<?php echo $key; ?>" class="table table-dark table-fit table-striped">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Product Name</th>
                                                     <th scope="col">Category</th>
                                                     <th scope="col">Unit of Measurement</th>
-                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Current Quantity</th>
                                                     <th scope="col">Mode</th>
-                                                    <th scope="col">Mode Quantity</th>
+                                                    <th scope="col">Quantity</th>
                                                     <th scope="col">Date Logs</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>

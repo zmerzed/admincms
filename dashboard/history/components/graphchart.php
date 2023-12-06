@@ -8,7 +8,7 @@
   require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
   $error_messages = [];
-  $year = date('Y');
+  $year = isset($_GET['year']) ? $_GET['year'] : date('Y');
   $month = isset($_GET['month']) ? $_GET['month'] : 1;
 
   $month_from = 1;
@@ -98,7 +98,7 @@
                 <label>Product:</label>
                 <select name="year" id="findProductChart1">
                   <?php foreach($products as $product) { ?>
-                    <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_id . "-" . $product->product_name ?></option>
+                    <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_name ?></option>
                   <?php } ?>  
                 </select>
             </div>
@@ -140,7 +140,7 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-            <strong><i>Product Overview</i></strong>
+            <strong><i>Product Stock In / Out</i></strong>
           </div>
           <div class="card-body">
             <!-- second graph -->
@@ -159,8 +159,20 @@
                 <option value="10" <?php echo $month == 10 ? 'selected' : '' ?>>October</option>
                 <option value="11" <?php echo $month == 11 ? 'selected' : '' ?>>November</option>
                 <option value="12" <?php echo $month == 12 ? 'selected' : '' ?>>December</option>
-
               </select>
+              <select name="year" id="findProductYear">
+                <option value="2020" <?php echo $year == 2020 ? 'selected' : '' ?>>2020</option>
+                <option value="2021" <?php echo $year == 2021 ? 'selected' : '' ?>>2021</option>
+                <option value="2022" <?php echo $year == 2022 ? 'selected' : '' ?>>2022</option>
+                <option value="2023" <?php echo $year == 2023 ? 'selected' : '' ?>>2023</option>
+                <option value="2024" <?php echo $year == 2024 ? 'selected' : '' ?>>2024</option>
+                <option value="2025" <?php echo $year == 2025 ? 'selected' : '' ?>>2025</option>
+                <option value="2026" <?php echo $year == 2026 ? 'selected' : '' ?>>2026</option>
+                <option value="2027" <?php echo $year == 2027 ? 'selected' : '' ?>>2027</option>
+                <option value="2028" <?php echo $year == 2028 ? 'selected' : '' ?>>2028</option>
+                <option value="2029" <?php echo $year == 2029 ? 'selected' : '' ?>>2029</option>
+                <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
+            </select>
             </div>
             <style>
               .productgraph {
@@ -222,7 +234,9 @@
   <script>
 
     $graph1ProductId = "<?php echo $graph1ProductId ?>";
-
+    var month = "<?php echo $month; ?>";
+    var year =  "<?php echo $year; ?>";
+    console.log('year', year)
     var select1 = document.querySelector('#findProductChart1')
     select1.addEventListener('change',function(event){
         window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + this.value
@@ -231,9 +245,19 @@
     var select2 = document.querySelector('#findProductChart2')
     select2.addEventListener('change',function(event){
         if ($graph1ProductId) {
-          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + this.value
+          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + this.value + '&year=' + year
         } else {
-          window.location.href = "/dashboard/history/graphical.php?month=" + this.value
+          window.location.href = "/dashboard/history/graphical.php?month=" + this.value + '&year=' + year
+        }
+    });
+
+    var select3 = document.querySelector('#findProductYear')
+    select3.addEventListener('change',function(event){
+      console.log('change')
+        if ($graph1ProductId) {
+          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + month + "&year=" + this.value
+        } else {
+          window.location.href = "/dashboard/history/graphical.php?month=" + month + "&year=" + this.value
         }
     });
   </script>

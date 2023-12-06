@@ -39,7 +39,7 @@
 
     if ($product) {
       $linearGraph[] = [
-        $product->product_name . " " . "($product->uom}", (int) $product->quantity
+        "[{$product->product_name}]" . " " . "($product->uom}", (int) $product->quantity
       ];
     }
   }

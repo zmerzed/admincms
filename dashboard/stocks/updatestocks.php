@@ -66,7 +66,7 @@
         }
     }
 
-    // manual alert SMS
+    // manual alert SMS 
     if (isset($_POST['alert'])) {
         
         $product = productFindById($_POST['alertProductId']); 
