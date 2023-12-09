@@ -22,6 +22,10 @@
         $month_to = $_GET['month_from'];
     }
 
+    $monthProperNumber = sprintf("%02d", $month_from);
+    $monthProperDate = "{$year}-{$monthProperNumber}-01";
+    $monthProper = date("F", strtotime($monthProperDate));
+
     if ($month_to < $month_from) {
         $error_messages = ["Error: <strong>Month From</strong> must be less than to <strong>Month To</strong>"];
     } else {
@@ -50,6 +54,8 @@
         //dd($data); display structure
     }
 
+    $pdfDataTable = [];
+    
     ?>
 
     <main>
@@ -113,11 +119,11 @@
                 <?php if (count($error_messages) <= 0) { ?>
                     <?php foreach ($data as $month) { ?>
                         <div class="col">
-                            <div class="card mb-4">
+                            <div class="card mb-4" id="reportsTable">
                                 <div class="card-header">
                                     <?php echo $month['month']; ?>
                                 </div>
-                                <div class="card-body" id="reportsTable">
+                                <div class="card-body">
                                     <?php if (count($month['listing']) <= 0) {
                                         echo "* No data available";
                                     } else { ?>
@@ -126,6 +132,7 @@
                                                 <tr>
                                                     <th scope="col">ID</th>
                                                     <th scope="col">Product Name</th>
+                                                    <th scope="col">Current Quantity</th>
                                                     <th scope="col">Stock In Quantity</th>
                                                     <th scope="col">Stock Out Quantity</th>
                                                     <th scope="col">Low Quantity Level</th>
@@ -133,11 +140,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php $pdfDataTable = []; ?>
                                                 <?php foreach ($month['listing'] as $key => $product) { ?>
+                                                    <?php 
+                                                        $pdfDataTable[] = [
+                                                            $key+1,
+                                                            $product->product_name,
+                                                            $product->quantity,
+                                                            $product->stock_in_quantity,
+                                                            $product->stock_out_quantity,
+                                                            $product->low_quantity_level,
+                                                            $product->uom
+                                                        ];
+                                                    ?>
                                                     <?php $lowStockClass = $product->quantity <= $product->low_quantity_level ? 'text-danger' : '';?>
                                                     <?php echo '<tr>'; ?>
                                                     <?php echo '<th scope=\"row\">' . ($key + 1) . '</th>'; ?>
                                                     <?php echo '<td>' . $product->product_name . "</td>"; ?>
+                                                    <?php echo '<td>' . $product->quantity . "</td>"; ?>
                                                     <?php echo "<td><div>" . $product->stock_in_quantity . 
                                         '</div></td>'; ?>
                                         <?php echo "<td><div>" . $product->stock_out_quantity . 
@@ -161,54 +181,41 @@
         </div>
     </main>
 </div>
+<?php 
+    // dd($pdfDataTable)
+?>
 <script>
+    window.jsPDF = window.jspdf.jsPDF;
     window.takeScreenShot = function() {
         
-        var pdf = new jsPDF('l', 'pt');
-        // source can be HTML-formatted string, or a reference
-        // to an actual DOM element from which the text will be scraped.
-        let msource = $('#reportsTable').html();
+        var doc = new jsPDF('l', 'pt');
+        var month = "<?php echo $monthProper; ?>";
+        var year =  "<?php echo $year; ?>";
+        var rows =  JSON.stringify(<?php echo json_encode($pdfDataTable); ?>)
+        rows = JSON.parse(rows);
+        // Define the table columns and rows
+        const columns = ["ID", "Product Name", "Current Quantity", "Stock In Quantity", "Stock Out Quantity", "Low Quantity Level", "Unit of Measurement"];
+        // const rows = [
+        //     ["John Doe", 30, "USA"],
+        //     ["Jane Smith", 25, "Canada"],
+        //     ["Bob Johnson", 40, "UK"],
+        // ];
 
-        let source = "<div style='font-size:11px; border:1px solid; background-color: rgb(239 240 240); padding: 05px 15px; width:300px;'>"+ msource +"</div>";
+        // Set the table options
+        const options = {
+            startY: 50, // Vertical position to start the table (in mm),
+            didDrawPage: function (data) {
 
-        console.log(source)
-        margins = {
-            top: 80,
-            bottom: 60,
-            left: 10,
-            width: 800
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(40);
+            doc.text(`${month} - ${year}`, data.settings.margin.left, 30);}
         };
-        // all coords and widths are in jsPDF instance's declared units
-        // 'inches' in this case
-        pdf.fromHTML(
-            source, // HTML string or DOM elem ref.
 
-            margins.left, // x coord
-            margins.top, { // y coord
-                'width': margins.width, // max width of content on PDF
-            },
+        // Generate the table
+        doc.autoTable(columns, rows, options);
 
-            function (dispose) {
-                // dispose: object with X, Y of the last line add to the PDF 
-                //          this allow the insertion of new lines after html
-                pdf.save('reports.pdf');
-            }, 
-        margins);
-
-        //html2canvas(document.getElementById('reports')).then(function(canvas) {
-            // var wid
-            // var hgt
-            // // document.body.appendChild(canvas)
-            // var img = canvas.toDataURL("image/png", wid = canvas.width, hgt = canvas.height);
-            // var hratio = hgt / wid
-            // var doc = new jsPDF('p', 'pt', 'a4');
-            // var width = doc.internal.pageSize.width;
-            // var height = width * hratio
-            // console.log('width', width / 2)
-            // console.log('height', height / 2)
-            // doc.addImage(img, 'JPEG', 20, 20, width / 1.2, height / 1.2);
-            // doc.save('reports.pdf');
-           
-        //});
+        // Save the PDF
+        doc.save('table.pdf');
     }
 </script>

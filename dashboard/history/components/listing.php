@@ -2,6 +2,9 @@
     form {
         display: flex;
     }
+    .history {
+      min-height: 100% !important;
+    }
     
 </style>
 <div id="layoutSidenav_content">
@@ -53,6 +56,9 @@
         }
     ?>
 
+    <?php 
+        //dd($data);
+    ?>
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
@@ -128,8 +134,8 @@
                 <?php $countDataAvailable = 0; ?>
                 <?php if (count($error_messages) <= 0) { ?>
                     <?php foreach($data as $key => $month) { ?>
-                        <div class="col">
-                            <div class="card mb-4">
+                        <div class="col" style="margin-bottom: 20px">
+                            <div class="card history mb-4">
                                 <div class="card-header">
                                     <?php echo $month['month']; ?>
                                 </div>
@@ -160,7 +166,7 @@
                                                         echo '<td>' . $product->quantity . '</td>';
                                                         echo '<td>' . $product->mode . '</td>';
                                                         echo '<td>' . $product->log_quantity . '</td>';
-                                                        echo '<td>' . $product->created_at . '</td>';
+                                                        echo '<td>' . $product->log_created_at . '</td>';
 
                                                     }
                                                 ?>

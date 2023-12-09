@@ -9,19 +9,20 @@
 
   $error_messages = [];
   $year = isset($_GET['year']) ? $_GET['year'] : date('Y');
+  $graphicalYear = isset($_GET['graphicalYear']) ? $_GET['graphicalYear'] : date('Y');
   $month = isset($_GET['month']) ? $_GET['month'] : 1;
 
   $month_from = 1;
   $month_to = 12;
   $data = [];
-  $barGraph[] = ["" . $year, 'Stock In', 'Stock Out'];
+  $barGraph[] = ["" . $graphicalYear, 'Stock In', 'Stock Out'];
   $products = productList([]);
   $graph1ProductId = isset($_GET['graph1_product_id']) ? $_GET['graph1_product_id'] : null;
 
   foreach (range($month_from, $month_to) as $number) {
 
     $monthNumber = sprintf("%02d", $number);
-    $date = "{$year}-{$monthNumber}-01";
+    $date = "{$graphicalYear}-{$monthNumber}-01";
 
     $monthData = [
       'month' => date("F", strtotime($date)),
@@ -101,6 +102,19 @@
                     <option value="<?php echo $product->product_id ?>" <?php echo $graph1ProductId == $product->product_id ? 'selected' : '' ?>><?php echo $product->product_name ?></option>
                   <?php } ?>  
                 </select>
+                <select name="graphicalYear" id="findGraphProductYear">
+                  <option value="2020" <?php echo $graphicalYear == 2020 ? 'selected' : '' ?>>2020</option>
+                  <option value="2021" <?php echo $graphicalYear == 2021 ? 'selected' : '' ?>>2021</option>
+                  <option value="2022" <?php echo $graphicalYear == 2022 ? 'selected' : '' ?>>2022</option>
+                  <option value="2023" <?php echo $graphicalYear == 2023 ? 'selected' : '' ?>>2023</option>
+                  <option value="2024" <?php echo $graphicalYear == 2024 ? 'selected' : '' ?>>2024</option>
+                  <option value="2025" <?php echo $graphicalYear == 2025 ? 'selected' : '' ?>>2025</option>
+                  <option value="2026" <?php echo $graphicalYear == 2026 ? 'selected' : '' ?>>2026</option>
+                  <option value="2027" <?php echo $graphicalYear == 2027 ? 'selected' : '' ?>>2027</option>
+                  <option value="2028" <?php echo $graphicalYear == 2028 ? 'selected' : '' ?>>2028</option>
+                  <option value="2029" <?php echo $graphicalYear == 2029 ? 'selected' : '' ?>>2029</option>
+                  <option value="2030" <?php echo $graphicalYear == 2030 ? 'selected' : '' ?>>2030</option>
+                </select>
             </div>
             <style>
               .bargraph {
@@ -172,7 +186,7 @@
                 <option value="2028" <?php echo $year == 2028 ? 'selected' : '' ?>>2028</option>
                 <option value="2029" <?php echo $year == 2029 ? 'selected' : '' ?>>2029</option>
                 <option value="2030" <?php echo $year == 2030 ? 'selected' : '' ?>>2030</option>
-            </select>
+              </select>
             </div>
             <style>
               .productgraph {
@@ -236,6 +250,7 @@
     $graph1ProductId = "<?php echo $graph1ProductId ?>";
     var month = "<?php echo $month; ?>";
     var year =  "<?php echo $year; ?>";
+    var graphicalYear = "<?php echo $graphicalYear; ?>";
     console.log('year', year)
     var select1 = document.querySelector('#findProductChart1')
     select1.addEventListener('change',function(event){
@@ -245,7 +260,7 @@
     var select2 = document.querySelector('#findProductChart2')
     select2.addEventListener('change',function(event){
         if ($graph1ProductId) {
-          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + this.value + '&year=' + year
+          window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + $graph1ProductId + '&month=' + this.value + '&year=' + year
         } else {
           window.location.href = "/dashboard/history/graphical.php?month=" + this.value + '&year=' + year
         }
@@ -255,9 +270,19 @@
     select3.addEventListener('change',function(event){
       console.log('change')
         if ($graph1ProductId) {
-          window.location.href = "/dashboard/history/graphical.php??graph1_product_id=" + $graph1ProductId + '&month=' + month + "&year=" + this.value
+          window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + $graph1ProductId + '&month=' + month + "&year=" + this.value
         } else {
           window.location.href = "/dashboard/history/graphical.php?month=" + month + "&year=" + this.value
+        }
+    });
+
+    var select4 = document.querySelector('#findGraphProductYear')
+    select4.addEventListener('change',function(event){
+      console.log('change')
+        if ($graph1ProductId) {
+          window.location.href = "/dashboard/history/graphical.php?graph1_product_id=" + $graph1ProductId + '&month=' + month + "&year=" + year + '&graphicalYear=' + this.value
+        } else {
+          window.location.href = "/dashboard/history/graphical.php?month=" + month + "&year=" + year + '&graphicalYear=' + this.value 
         }
     });
   </script>
