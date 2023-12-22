@@ -39,7 +39,7 @@
 
     if ($product) {
       $linearGraph[] = [
-        "[{$product->product_name}]" . " " . "($product->uom}", (int) $product->quantity
+        "{$product->product_name}" . " " . "($product->uom)", (int) $product->quantity
       ];
     }
   }
@@ -56,7 +56,7 @@
       <div class="col">
         <div class="card mb-4">
           <div class="card-header">
-          <strong><i>Stocks</i></strong>
+          <strong><i> Current Stocks</i></strong>
           </div>
           <div class="card-body">
             <!-- First graph -->

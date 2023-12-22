@@ -18,8 +18,8 @@
                     <div class="collapse" id="collapseLayoutsStocks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a href="/dashboard/stocks" class="nav-link" href="layout-static.html">View Stock Data</a>
-                        <a href="/dashboard/stocks/updatestock.php" class="nav-link" href="layout-sidenav-light.html">Update Stocks</a>
-                        <a href="/dashboard/stocks/product_logs.php" class="nav-link" href="layout-sidenav-light.html">Product Logs</a>
+                        <a href="/dashboard/stocks/updatestock.php" class="nav-link" href="layout-sidenav-light.html">Alert Stocks</a>
+                        <a href="/dashboard/stocks/entry.php" class="nav-link" href="layout-sidenav-light.html">Update Stocks</a>  
                     </nav>
                     </div>
 
@@ -38,7 +38,7 @@
 
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsInventory" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
-                        Inventory History
+                       Reports
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayoutsInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -50,12 +50,12 @@
 
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsInventory" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
-                        Reports
+                       Transaction Logs
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayoutsInventory" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                        <a href="/dashboard/reports" class="nav-link" href="layout-static.html">Stock Report</a>
+                        <a href="/dashboard/stocks/product_logs.php" class="nav-link" href="layout-sidenav-light.html">Product Logs</a>
                         </nav>
                     </div>
 

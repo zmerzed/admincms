@@ -11,8 +11,8 @@
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/stockHelper.php';
 
-    $month_from = 1;
-    $month_to = 1;
+    $month_from = date('m');
+    $month_to = date('m');
     $currentMonth = date('m');
     $error_messages = [];
     $data = [];
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="row justify-content-between mb-4">
-                <form id="productForm" method="GET" action='reports'>
+                <!-- <form id="productForm" method="GET" action='reports'>
                     <div class="col lg-6 me-2">
                         <label class="form-label" for="quantity">Month</label>
                         <select class="form-select" name="month_from">
@@ -104,12 +104,12 @@
                         <input class="btn btn-primary btn-md me-2" type="submit" value="Search"/>
                         <a class="btn btn-secondary btn-md" href="/dashboard/reports">Reset</a>
                     </div>
-                </form>
+                </form> -->
                 <div class="col pt-4">
                     
                     <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
                 </div>
-            </div>
+               </div>
 
             <!-- display if any errors -->
             <?php if (count($error_messages) > 0) {
@@ -143,12 +143,22 @@
                                                 <?php $pdfDataTable = []; ?>
                                                 <?php foreach ($month['listing'] as $key => $product) { ?>
                                                     <?php 
+                                                        $date = "{$year}-{$month_from}-01";
+                                                        $dateFrom = date("Y-m-01", strtotime($date));
+                                                        $dateTo = date("Y-m-t", strtotime($date));
+                                                        $params = [
+                                                          'date_from' => $dateFrom,
+                                                          'date_to' => $dateTo
+                                                        ];
+                                                        $params['product_id'] = $product->product_id;
+                                                        $totalInMonth = productLogTotal($params, 'in');
+                                                        $totalOutMonth = productLogTotal($params, 'out');
                                                         $pdfDataTable[] = [
                                                             $key+1,
                                                             $product->product_name,
                                                             $product->quantity,
-                                                            $product->stock_in_quantity,
-                                                            $product->stock_out_quantity,
+                                                            $totalInMonth,
+                                                            $totalOutMonth,
                                                             $product->low_quantity_level,
                                                             $product->uom
                                                         ];
@@ -158,14 +168,10 @@
                                                     <?php echo '<th scope=\"row\">' . ($key + 1) . '</th>'; ?>
                                                     <?php echo '<td>' . $product->product_name . "</td>"; ?>
                                                     <?php echo '<td>' . $product->quantity . "</td>"; ?>
-                                                    <?php echo "<td><div>" . $product->stock_in_quantity . 
-                                        '</div></td>'; ?>
-                                        <?php echo "<td><div>" . $product->stock_out_quantity . 
-                                        '</div></td>'; ?>
-                                                    <?php echo "<td><div>" . $product->low_quantity_level . 
-                                        '</div></td>'; ?>
-                                        <?php echo "<td><div class=\"{$lowStockClass}\">" . $product->uom . 
-                                        '</div></td>'; ?>
+                                                    <?php echo "<td><div>" . $totalInMonth . '</div></td>'; ?>
+                                                    <?php echo "<td><div>" . $totalOutMonth . '</div></td>'; ?>
+                                                    <?php echo "<td><div>" . $product->low_quantity_level . '</div></td>'; ?>
+                                                    <?php echo "<td><div>" . $product->uom . '</div></td>'; ?>
                                                     <?php echo '</tr>'; ?>
                                                     <!-- Modal for view logs -->
                                                 <?php } // end foreach ?>

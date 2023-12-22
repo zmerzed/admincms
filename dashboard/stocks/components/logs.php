@@ -13,9 +13,9 @@
     <main>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <div class="col pt-4">
+                <!-- <div class="col pt-4">
                     <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
-                </div>
+                </div> -->
             </div>
             <div class="card mb-4" id="logs">
                 <div class="card-header">

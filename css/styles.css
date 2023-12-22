@@ -1963,7 +1963,7 @@ progress {
 }
 .form-label {
   margin-bottom: 0.5rem;
-  color: var(--bs-white);
+  color: black;
   
 
 }
@@ -11007,6 +11007,7 @@ body {
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
   font-size: 0.9rem;
+  color: var(--bs-white);
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {
   display: inline-block;

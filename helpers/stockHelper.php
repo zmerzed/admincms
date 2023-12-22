@@ -52,6 +52,32 @@ function productQuantityUpdate($product)
 
 /** 
  *	
+ * updating a product log
+ * @return boolean
+ *
+ **/
+function productLogQuantityUpdate($log)
+{
+	global $db;
+
+	try {
+	
+		$sql = "UPDATE product_logs SET quantity={$log->quantity} WHERE id={$log->id} limit 1";
+		mysqli_query($db->link, $sql);
+		if(is_resource($db->link) && get_resource_type($db->link)==='mysql link'){
+			//dd('test');
+			$db->link->close();
+		}
+		return true;
+	} catch (\Exception) {
+		
+	}
+
+	return false;
+}
+
+/** 
+ *	
  * updating a product status
  * @return boolean
  *
@@ -68,7 +94,7 @@ function productUpdateStatus($product, $status)
 		//$db->link->close();
 		if(is_resource($db->link) && get_resource_type($db->link)==='mysql link'){
 			$db->link->close(); //Object oriented style
-			//mysqli_close($connection); //Procedural style 
+			mysqli_close($connection); //Procedural style 
 		}
 		return true;
 	} catch (\Exception) {
@@ -456,6 +482,33 @@ function productFindById($id=null)
 
 /** 
  *	
+ * find a product log
+ * @return a product
+ *
+ **/
+function productLogFindById($id=null)
+{
+
+	global $db;
+	
+	try {
+		 $query = "SELECT * FROM `product_logs` where id={$id} limit 1";
+		 $result = mysqli_query($db->link, $query);
+		
+		   if ($result->num_rows > 0) 
+		   {
+			   return (object) $result->fetch_assoc(); 
+		   } 
+	} catch (\Exception) {
+		
+	}
+
+	return null;
+}
+
+
+/** 
+ *	
  * find a product by id
  * @return a product
  *
@@ -481,6 +534,35 @@ function productDelete($id=null)
 
 	return $result;
 }
+
+/** 
+ *	
+ * delete a product log
+ * @return a product
+ *
+ **/
+function productLogDelete($log)
+{
+
+	global $db;
+	
+	$result = false;
+
+	try {
+		$sql = "DELETE from product_logs WHERE id={$log->id} limit 1";
+
+		mysqli_query($db->link, $sql);
+		
+		// $query = "DELETE FROM `product_logs` where product_id={$id}";
+		// $result = mysqli_query($db->link, $query);
+		
+	} catch (\Exception) {
+		
+	}
+
+	return $result;
+}
+
 
 
 function productGetEmptyForm()

@@ -51,7 +51,7 @@
                     // send sms
                     $adminUser = getAdminUser();
                     $suggestedQuantity = getSuggestQuantity($product);
-                    // sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
+                    sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
                     productUpdateStatus($product, 'Alerted');
                 }
             }
@@ -72,7 +72,7 @@
         $product = productFindById($_POST['alertProductId']); 
         $adminUser = getAdminUser();
         $suggestedQuantity = getSuggestQuantity($product);
-        // sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
+        sendSMS($adminUser->phone_number, "Low Stock: {$product->product_name} suggested quantity {$suggestedQuantity}");
         header('location: /dashboard/stocks/updatestock.php');
     }
 
@@ -95,7 +95,7 @@
             } ?>
             <div class="card mb-4">
                 <div class="card-header">
-                    <strong><i>Update Stocks</i></strong>
+                    <strong><i>Alert Stocks</i></strong>
                     <a style="float:right" href="/dashboard/stocks/create.php" type="button" class="btn btn-primary">Create</a>
                 </div>
                 <div class="card-body">
@@ -110,8 +110,8 @@
                                 <th scope="col">Low Quantity Level</th>
                                 
                                 <?php if (auth()->access_level != 1) { ?>
-                                    <th scope="col">Action</th>
-                                    <th scope="col">SMS Alert</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">SMS Alert</th>
                                 <?php } ?>
                             </tr>
                         </thead>
@@ -169,7 +169,7 @@
                     <h5 class="modal-title">Stock In Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
+                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST" onsubmit="return confirmStockIn()">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>
@@ -207,7 +207,7 @@
                     <h5 class="modal-title">Stock Out Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
+                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST" onsubmit="return confirmStockOut()">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>
@@ -243,7 +243,7 @@
                     <h5 class="modal-title">Low Quantity Level</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST">
+                <form action="/dashboard/stocks/updatestock.php?product_id=<?php echo $product->product_id; ?>" method="POST" onsubmit="return confirmStockIn()">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="stockin_product" class="form-label">Product</label>

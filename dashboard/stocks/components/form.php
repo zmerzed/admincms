@@ -18,7 +18,7 @@
         } else {
 
             // check if the stock is low if so send an SMS
-            // sendSMS()
+            //  sendSMS()
         }
     ?>
     <main>

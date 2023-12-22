@@ -32,10 +32,10 @@
     ?>
     <main>
         <div class="container-fluid px-4">
-            <h2 class="mt-4 mb-4"><?php echo $formLabel ?></h2>
+            <!-- <h2 class="mt-4 mb-4"><?php echo $formLabel ?></h2> -->
             <div class="card mb-4">
                 <div class="card-header">
-                    Create User
+                    <strong><i>Create User</i></strong>
                 </div>
                 <div class="card-body">
                     <form id="productForm" method="POST" action="<?php echo $formMode == 'create' ? 'create.php' : 'edit.php?id=' . $id ?>">
@@ -72,7 +72,7 @@
                             <label class="form-label" for="access_level">Access Level</label>
                             <select class="form-select" name="access_level">
                                 <option value="1" <?php echo ($user->access_level == 1) ? 'selected' : '' ?>>Admin</option>
-                                <option value="2" <?php echo ($user->access_level == 2) ? 'selected' : '' ?>>Guest</option>
+                                <option value="2" <?php echo ($user->access_level == 2) ? 'selected' : '' ?>>Staff</option>
                             </select>
                         </div>
 

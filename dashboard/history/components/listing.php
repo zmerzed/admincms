@@ -59,14 +59,13 @@
     <?php 
         //dd($data);
     ?>
-    <main>
+    <main>       
+        <div class="col pt-4">               
+            <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
+        </div>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
-                <div class="col">
-                    
-                </div>
-            </div>
-            <div class="row justify-content-between mb-4">
+            <!-- <div class="row justify-content-between mb-4"> -->
                 <form id="productForm" method="GET" action='history'>
                     <div class="col lg-4 me-2">
                         <label class="form-label" for="quantity">Month From:</label>

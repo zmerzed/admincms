@@ -64,6 +64,26 @@
             background-color: rgba(255, 255, 255, 2 );
         }
     </style>
+
+    <!-- Confirm Alert fucntionalties for stock in and stock out -->
+
+<script>
+    function confirmStockIn() {
+        return confirm("Are you sure you want to perform Stock In?");
+    }
+
+    function confirmDelete() {
+        return confirm("Are you sure you want to Delete?");
+    }
+
+    function confirmStockOut() {
+        return confirm("Are you sure you want to perform Stock Out?");
+    }
+
+    function confirmLowLevelUpdate() {
+        return confirm("Are you sure you want to update the Low Quantity Level?");
+    }
+</script>
     
 
 </head>
