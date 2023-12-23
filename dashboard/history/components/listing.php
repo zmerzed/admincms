@@ -52,16 +52,11 @@
                 $monthData['logs'] = $logs;
                 $data[] = $monthData;
             } 
-            //dd($data); display structure
         }
-    ?>
-
-    <?php 
-        //dd($data);
     ?>
     <main>       
         <div class="col pt-4">               
-            <button class="btn btn-secondary btn-md" onclick="takeScreenShot()">Download as pdf</button>
+            <button class="btn btn-secondary btn-md" id="download">Download as pdf</button>
         </div>
         <div class="container-fluid px-4">
             <div class="row justify-content-between mt-4 mb-4">
@@ -183,10 +178,13 @@
 </div>
 
 <script>
+    window.jsPDF = window.jspdf.jsPDF;
+    var tableData =  JSON.stringify(<?php echo json_encode($data); ?>)
+    tableData = JSON.parse(tableData);
 
+    console.log("DATA", tableData)
     var countDataAvailable = parseInt('<?php echo $countDataAvailable ?>');
     
-    console.log('test2', countDataAvailable)
     $(document).ready(function() {
 
         for (let i=0; i<=countDataAvailable; i++) {
@@ -196,6 +194,115 @@
             } );
         }
     });
+
+
+    function createRows(count, monthDataPointer) {
+        const rows = [];
+        const data = tableData[monthDataPointer].logs;
+        for (let i = 0; i < count; i++) {
+
+            rows.push([
+                data[i].product_name, 
+                data[i].category, 
+                data[i].uom,
+                data[i].quantity,
+                data[i].mode,
+                data[i].log_quantity,
+                data[i].log_created_at,
+            ])
+        }
+        return rows;
+    }
+
+    function generatePDF() {
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+            // overall margin
+            const margin = {
+                left: 15,
+                right: 15,
+                top: 20,
+                bottom: 20,
+            };
+
+            const tablesCount = parseInt(tableData.length);
+            const rowsCount = parseInt(4);
+
+            // number of table sections in the page
+            const sections = parseInt(1);
+
+            // space between each section
+            const spacing = 5;
+
+            // calculate each section width
+            const printWidht = doc.internal.pageSize.width - (margin.left + margin.right);
+            const sectionWidth = (printWidht - ((sections - 1) * spacing)) / sections;
+
+            // add an initial empty page that will be delete later,
+            // it is needed for the first setPage(previous_page) call
+            doc.addPage();
+
+            let currentSection;
+            let nextSection = 1;
+            let startY = margin.top;
+
+            for (let i = 0; i < tablesCount; i++) 
+            {
+                let monthName = tableData[i].month;
+                let noOfRows = tableData[i].logs.length;
+                doc.autoTable({
+                    theme: 'grid',
+                    head: [[monthName, '', '', '', '', '', ''], ["Product Name", "Category", "Unit of Measurement", "Current Quantity", "Mode", "Quantity", "Log Date"]],
+                    body: createRows(noOfRows, i),
+                    tableWidth: sectionWidth,
+                    margin: {
+                        left: margin.left + ((nextSection - 1) * (sectionWidth + spacing)),
+                        top: margin.top,
+                        bottom: margin.bottom,
+                    },
+                    startY,
+                    rowPageBreak: 'avoid', // avoid breaking rows into multiple sections
+                    didDrawPage({table, pageNumber, pageCount}) {
+                        currentSection = nextSection;
+                        nextSection = (nextSection % sections) + 1;
+
+                        // set left margin which will controll x position of next section
+                        const shift = (nextSection - 1) * (sectionWidth + spacing)
+                        table.settings.margin.left = margin.left + shift;
+
+                        // if next section is not the fist, move to previous page so when
+                        // autoTable calls addPage() it will still be the same current page
+                        if (nextSection > 1) {
+                            doc.setPage(doc.internal.getNumberOfPages() - 1);
+                        }
+                    }
+                });
+
+                // activate last page for further printing
+                doc.setPage(doc.internal.getNumberOfPages());
+
+                // if there's remaining vertical space in page: start printing next table from the current section
+                const remainingVSpace = doc.internal.pageSize.height - margin.bottom - doc.lastAutoTable.finalY;
+                if (remainingVSpace > 25) {
+                    nextSection = currentSection;
+                    startY = doc.lastAutoTable.finalY + 10;
+                } else {
+                    startY = margin.top;
+                    if (nextSection == 1) doc.addPage();
+                }
+            }
+            
+            // delete unused empty page
+            doc.deletePage(1);
+
+        return doc;
+    }
+
+    document.getElementById("download").addEventListener('click', function() {
+        generatePDF().save('multi-section table.pdf');
+    });
+
+
 </script>
 
 <style>
